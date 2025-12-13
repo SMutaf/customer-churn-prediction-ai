@@ -2,19 +2,28 @@ using CustomerAI.Core.Interfaces;
 using CustomerAI.Data.Context;
 using CustomerAI.Data.Repositories;
 using CustomerAI.Services.Concrete;
-using CustomerAI.Services.Concrete; // Bunu eklemeyi unutma
+using CustomerAI.Services.Concrete; 
 using CustomerAI.Services.Interfaces;
-using CustomerAI.Services.Interfaces; //
+using CustomerAI.Services.Interfaces; 
 using CustomerAI.Services.Validators;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
+using Serilog;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
-// --- CORS AYARI (Frontend Eriþimi Ýçin) ---
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information() 
+    .WriteTo.Console() 
+    .WriteTo.File("logs/log-.txt", 
+        rollingInterval: RollingInterval.Day) 
+    .CreateLogger();
+
+builder.Host.UseSerilog();
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll",
@@ -31,16 +40,14 @@ builder.Services.AddDbContext<CustomerAiDbContext>(options =>
 
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 
-// Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddHttpClient<IPythonApiService, PythonApiService>(client =>
 {
-    // Python projesinin çalýþtýðý adres (Uvicorn)
+    // Python projesinin çalýþtýðý adres 
     client.BaseAddress = new Uri("http://127.0.0.1:5000");
 });
 
@@ -61,7 +68,6 @@ builder.Services.AddFluentValidationAutoValidation()
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -75,6 +81,8 @@ app.UseCors("AllowAll");
 app.UseAuthorization();
 
 app.UseMiddleware<CustomerAI.API.Middleware.GlobalExceptionMiddleware>();
+
+app.UseSerilogRequestLogging();
 
 app.MapControllers();
 
