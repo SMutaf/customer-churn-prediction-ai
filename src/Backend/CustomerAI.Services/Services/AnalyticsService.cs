@@ -8,6 +8,7 @@ using CustomerAI.Core.Interfaces;
 using CustomerAI.Data.Context;
 using CustomerAI.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 
 namespace CustomerAI.Services.Concrete
@@ -16,21 +17,29 @@ namespace CustomerAI.Services.Concrete
     {
         private readonly CustomerAiDbContext _context;
         private readonly IPythonApiService _pythonApiService;
+        private readonly ILogger _logger;
 
-        public AnalyticsService(CustomerAiDbContext context, IPythonApiService pythonApiService)
+        public AnalyticsService(CustomerAiDbContext context, IPythonApiService pythonApiService, ILogger<AnalyticsService> logger)
         {
             _context = context;
             _pythonApiService = pythonApiService;
+            _logger = logger;
         }
 
         public async Task<AiPredictionLog> AnalyzeSingleCustomerAsync(int customerId)
         {
+            _logger.LogInformation("Müşteri analizi başlatılıyor. ID: {CustomerId}", customerId);
+
             var customer = await _context.Customers
                 .Include(c => c.Orders)
                 .Include(c => c.Interactions)
                 .FirstOrDefaultAsync(c => c.Id == customerId);
 
-            if (customer == null) throw new Exception("Müşteri bulunamadı!");
+            if (customer == null)
+            {
+                _logger.LogWarning("Analiz iptal edildi: Müşteri bulunamadı! ID: {CustomerId}", customerId);
+                throw new Exception("Müşteri bulunamadı!");
+            }
 
             int membershipDays = (DateTime.Now - customer.MembershipDate).Days;
             float totalSpend = (float)customer.Orders.Sum(o => o.TotalAmount);
@@ -52,6 +61,14 @@ namespace CustomerAI.Services.Concrete
             };
 
             var aiResponse = await _pythonApiService.GetChurnPredictionAsync(aiRequest);
+
+            var riskLevel = aiResponse.churn_risk_score > 0.7 ? RiskLevel.High :
+                            aiResponse.churn_risk_score > 0.4 ? RiskLevel.Medium : RiskLevel.Low;
+
+            if (riskLevel == RiskLevel.High)
+            {
+                _logger.LogWarning("DİKKAT! Yüksek Riskli Müşteri Tespit Edildi! ID: {Id}, Skor: {Score}", customer.Id, aiResponse.churn_risk_score);
+            }
 
             var predictionLog = new AiPredictionLog
             {
@@ -76,6 +93,8 @@ namespace CustomerAI.Services.Concrete
                 .Select(c => c.Id)
                 .ToListAsync();
 
+            _logger.LogInformation("Toplu analiz başladı. Toplam {Count} müşteri taranacak.", allCustomerIds.Count);
+
             int successCount = 0;
 
             foreach (var id in allCustomerIds)
@@ -87,11 +106,12 @@ namespace CustomerAI.Services.Concrete
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Müşteri ID {id} analiz edilirken hata: {ex.Message}");
+                    _logger.LogError(ex, "Toplu işlem sırasında Müşteri ID: {Id} analiz edilemedi.", id);
                     continue;
                 }
             }
 
+            _logger.LogInformation("Toplu analiz bitti. {Success}/{Total} başarı oranı.", successCount, allCustomerIds.Count);
             return successCount;
         }
    
