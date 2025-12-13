@@ -65,5 +65,29 @@ namespace CustomerAI.Data.Repositories
                 RecentPredictions = recentList
             };
         }
+
+        public async Task<List<RiskyCustomerExportDto>> GetRiskyCustomersAsync()
+        {
+            var rawLogs = await _context.AiPredictionLogs
+                .Include(c => c.Customer)
+                .Where(x => x.RiskLevel == Core.Enums.RiskLevel.High || x.RiskLevel == Core.Enums.RiskLevel.Critical)
+                .ToListAsync(); 
+
+            var riskyList = rawLogs
+                .GroupBy(x => x.CustomerId) 
+                .Select(g => g.OrderByDescending(x => x.PredictionDate).FirstOrDefault()) 
+                .Select(x => new RiskyCustomerExportDto 
+                {
+                    CustomerName = x.Customer.Name,
+                    Email = x.Customer.Email,
+                    Phone = x.Customer.Phone,
+                    ChurnScore = x.ChurnScore,
+                    RiskLevel = x.RiskLevel.ToString(),
+                    RecommendedAction = x.RecommendedAction
+                })
+                .ToList();
+
+            return riskyList;
+        }
     }
 }

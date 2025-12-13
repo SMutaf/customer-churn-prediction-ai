@@ -18,5 +18,10 @@ namespace CustomerAI.Services.Concrete
         {
             return await _reportRepository.GetDashboardDataAsync();
         }
+
+        public async Task<List<RiskyCustomerExportDto>> GetRiskyCustomerReportAsync()
+        {
+            return await _reportRepository.GetRiskyCustomersAsync();
+        }
     }
 }

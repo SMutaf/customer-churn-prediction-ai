@@ -3,7 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using CustomerAI.Core.DTOs;
 using CustomerAI.Core.Entities;
-using CustomerAI.Core.Enums; 
+using CustomerAI.Core.Enums;
+using CustomerAI.Core.Interfaces;
 using CustomerAI.Data.Context;
 using CustomerAI.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -93,5 +94,6 @@ namespace CustomerAI.Services.Concrete
 
             return successCount;
         }
+   
     }
 }

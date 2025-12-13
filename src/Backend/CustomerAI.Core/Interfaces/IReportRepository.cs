@@ -6,5 +6,6 @@ namespace CustomerAI.Core.Interfaces
     public interface IReportRepository
     {
         Task<DashboardSummaryDto> GetDashboardDataAsync();
+        Task<List<RiskyCustomerExportDto>> GetRiskyCustomersAsync();
     }
 }

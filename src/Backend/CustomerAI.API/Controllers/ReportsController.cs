@@ -1,4 +1,5 @@
-﻿using CustomerAI.Services.Interfaces;
+﻿using CustomerAI.Services.Concrete;
+using CustomerAI.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,6 +21,14 @@ namespace CustomerAI.API.Controllers
         {
             var stats = await _reportService.GetDashboardSummaryAsync();
             return Ok(stats);
+        }
+
+
+        [HttpGet("export-risky-customers")]
+        public async Task<IActionResult> ExportRiskyCustomers()
+        {
+            var result = await _reportService.GetRiskyCustomerReportAsync();
+            return Ok(result);
         }
 
     }

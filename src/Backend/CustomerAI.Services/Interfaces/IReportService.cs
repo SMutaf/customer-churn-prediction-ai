@@ -11,5 +11,6 @@ namespace CustomerAI.Services.Interfaces
     public interface IReportService
     {
         Task<DashboardSummaryDto> GetDashboardSummaryAsync();
+        Task<List<RiskyCustomerExportDto>> GetRiskyCustomerReportAsync();
     }
 }
