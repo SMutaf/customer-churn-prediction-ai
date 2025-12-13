@@ -150,7 +150,7 @@ async function downloadRiskyReport() {
         }
 
         let csvContent = "\uFEFF";
-        csvContent += "Musteri Adi;Email;Telefon;Risk Skoru;Risk Seviyesi;AI Onerisi\n"; // Başlıklar (Noktalı virgül Excel için daha güvenlidir)
+        csvContent += "Musteri Adi;Email;Telefon;Risk Skoru;Risk Seviyesi;AI Onerisi\n"; 
 
         data.forEach(row => {
             const cleanAction = row.recommendedAction ? row.recommendedAction.replace(/;/g, " -") : "";
