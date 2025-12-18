@@ -19,5 +19,6 @@ namespace CustomerAI.Core.DTOs
         public double ChurnScore { get; set; }
         public string RiskLevel { get; set; } 
         public string RecommendedAction { get; set; }
+        public string MainReason { get; set; }
     }
 }

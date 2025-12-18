@@ -52,7 +52,8 @@ namespace CustomerAI.Data.Repositories
                     CustomerName = l.Customer.Name,
                     ChurnScore = l.ChurnScore,
                     RiskLevel = l.RiskLevel.ToString(),
-                    RecommendedAction = l.RecommendedAction
+                    RecommendedAction = l.RecommendedAction,
+                    MainReason = l.MainReason
                 })
                 .ToListAsync();
 

@@ -35,12 +35,15 @@ function updateUI(data) {
         const riskLabel = pred.riskLevel === 'High' ? 'YÜKSEK' :
             pred.riskLevel === 'Medium' ? 'ORTA' : 'DÜŞÜK';
 
+        const reasonText = pred.mainReason ? pred.mainReason : 'Belirtilmemiş';
+
         const row = `
                     <tr>
                         <td class="fw-bold">${pred.customerName || 'Müşteri ' + pred.customerId}</td>
                         <td>${(pred.churnScore).toFixed(2)}</td>
                         <td><span class="badge ${badgeClass} p-2">${riskLabel}</span></td>
-                        <td class="text-muted small"><i class="fa-solid fa-robot text-primary"></i> ${pred.recommendedAction}</td>
+                        <td class="text-muted small">${pred.recommendedAction}</td>
+                        <td class="text-muted small"> ${reasonText}</td>
                     </tr>
                 `;
         tbody.innerHTML += row;
