@@ -77,7 +77,8 @@ namespace CustomerAI.Services.Concrete
                 ChurnScore = aiResponse.churn_risk_score,
                 RecommendedAction = aiResponse.ai_advice,
                 RiskLevel = aiResponse.churn_risk_score > 0.7 ? RiskLevel.High :
-                            aiResponse.churn_risk_score > 0.4 ? RiskLevel.Medium : RiskLevel.Low
+                            aiResponse.churn_risk_score > 0.4 ? RiskLevel.Medium : RiskLevel.Low,
+                MainReason = aiResponse.main_reason
             };
 
             await _context.AiPredictionLogs.AddAsync(predictionLog);

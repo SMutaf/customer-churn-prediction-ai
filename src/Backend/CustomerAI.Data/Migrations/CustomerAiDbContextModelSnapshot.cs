@@ -42,6 +42,9 @@ namespace CustomerAI.Data.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<string>("MainReason")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("PredictionDate")
                         .HasColumnType("datetime2");
 

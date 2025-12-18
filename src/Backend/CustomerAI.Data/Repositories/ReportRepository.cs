@@ -83,7 +83,8 @@ namespace CustomerAI.Data.Repositories
                     Phone = x.Customer.Phone,
                     ChurnScore = x.ChurnScore,
                     RiskLevel = x.RiskLevel.ToString(),
-                    RecommendedAction = x.RecommendedAction
+                    RecommendedAction = x.RecommendedAction,
+                    MainReason = x.MainReason
                 })
                 .ToList();
 

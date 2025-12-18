@@ -23,5 +23,9 @@ namespace CustomerAI.Core.Entities
 
         // AI aracılığıyla alınması gereken aksiyon
         public string RecommendedAction { get; set; }
+
+        //AI aracılığıyla gelen müşterinin neden kaybedilme riski olduğu
+        public string? MainReason { get; set; }
     }
 }
+

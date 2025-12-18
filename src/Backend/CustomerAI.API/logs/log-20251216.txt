@@ -1,0 +1,76 @@
+2025-12-16 16:28:41.824 +03:00 [INF] Now listening on: https://localhost:7272
+2025-12-16 16:28:41.856 +03:00 [INF] Now listening on: http://localhost:5236
+2025-12-16 16:28:41.929 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-12-16 16:28:41.932 +03:00 [INF] Hosting environment: Development
+2025-12-16 16:28:41.933 +03:00 [INF] Content root path: C:\Users\mutaf\Documents\GitHub\customer-churn-prediction-ai\src\Backend\CustomerAI.API
+2025-12-16 16:28:42.388 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7272/swagger - null null
+2025-12-16 16:28:42.521 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7272/swagger - 301 0 null 133.9066ms
+2025-12-16 16:28:42.531 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7272/swagger/index.html - null null
+2025-12-16 16:28:42.598 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7272/swagger/index.html - 200 null text/html;charset=utf-8 67.3459ms
+2025-12-16 16:28:42.623 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7272/_vs/browserLink - null null
+2025-12-16 16:28:42.623 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7272/_framework/aspnetcore-browser-refresh.js - null null
+2025-12-16 16:28:42.624 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7272/swagger/swagger-ui.css - null null
+2025-12-16 16:28:42.645 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7272/_framework/aspnetcore-browser-refresh.js - 200 16513 application/javascript; charset=utf-8 21.8069ms
+2025-12-16 16:28:42.666 +03:00 [INF] Sending file. Request path: '/swagger-ui.css'. Physical path: 'N/A'
+2025-12-16 16:28:42.667 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7272/swagger/swagger-ui.css - 499 152034 text/css 43.9245ms
+2025-12-16 16:28:42.690 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7272/_vs/browserLink - 200 null text/javascript; charset=UTF-8 66.8622ms
+2025-12-16 16:28:42.743 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7272/swagger/favicon-16x16.png - null null
+2025-12-16 16:28:42.747 +03:00 [INF] Sending file. Request path: '/favicon-16x16.png'. Physical path: 'N/A'
+2025-12-16 16:28:42.749 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7272/swagger/favicon-16x16.png - 499 665 image/png 6.5477ms
+2025-12-16 16:28:42.850 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7272/swagger/v1/swagger.json - null null
+2025-12-16 16:28:42.864 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7272/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 14.1642ms
+2025-12-16 16:28:56.913 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7272/api/Reports/dashboard - null null
+2025-12-16 16:28:56.921 +03:00 [INF] CORS policy execution successful.
+2025-12-16 16:28:56.928 +03:00 [INF] Executing endpoint 'CustomerAI.API.Controllers.ReportsController.GetDashboardStats (CustomerAI.API)'
+2025-12-16 16:28:56.954 +03:00 [INF] Route matched with {action = "GetDashboardStats", controller = "Reports"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetDashboardStats() on controller CustomerAI.API.Controllers.ReportsController (CustomerAI.API).
+2025-12-16 16:28:57.126 +03:00 [INF] Dashboard özet verileri talep edildi.
+2025-12-16 16:28:59.118 +03:00 [INF] Executed DbCommand (26ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*)
+FROM [Customers] AS [c]
+WHERE [c].[IsDeleted] = CAST(0 AS bit)
+2025-12-16 16:28:59.221 +03:00 [INF] Executed DbCommand (9ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [t0].[Id], [t0].[ChurnScore], [t0].[CreatedAt], [t0].[CustomerId], [t0].[IsDeleted], [t0].[PredictionDate], [t0].[RecommendedAction], [t0].[RiskLevel], [t0].[UpdatedAt]
+FROM (
+    SELECT [a].[CustomerId]
+    FROM [AiPredictionLogs] AS [a]
+    GROUP BY [a].[CustomerId]
+) AS [t]
+LEFT JOIN (
+    SELECT [t1].[Id], [t1].[ChurnScore], [t1].[CreatedAt], [t1].[CustomerId], [t1].[IsDeleted], [t1].[PredictionDate], [t1].[RecommendedAction], [t1].[RiskLevel], [t1].[UpdatedAt]
+    FROM (
+        SELECT [a0].[Id], [a0].[ChurnScore], [a0].[CreatedAt], [a0].[CustomerId], [a0].[IsDeleted], [a0].[PredictionDate], [a0].[RecommendedAction], [a0].[RiskLevel], [a0].[UpdatedAt], ROW_NUMBER() OVER(PARTITION BY [a0].[CustomerId] ORDER BY [a0].[PredictionDate] DESC) AS [row]
+        FROM [AiPredictionLogs] AS [a0]
+    ) AS [t1]
+    WHERE [t1].[row] <= 1
+) AS [t0] ON [t].[CustomerId] = [t0].[CustomerId]
+2025-12-16 16:28:59.364 +03:00 [INF] Executed DbCommand (14ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[CustomerId], [c].[Name], [t].[ChurnScore], [t].[RiskLevel], [t].[RecommendedAction]
+FROM (
+    SELECT TOP(@__p_0) [a].[ChurnScore], [a].[CustomerId], [a].[PredictionDate], [a].[RecommendedAction], [a].[RiskLevel]
+    FROM [AiPredictionLogs] AS [a]
+    ORDER BY [a].[PredictionDate] DESC
+) AS [t]
+INNER JOIN [Customers] AS [c] ON [t].[CustomerId] = [c].[Id]
+ORDER BY [t].[PredictionDate] DESC
+2025-12-16 16:28:59.368 +03:00 [INF] Dashboard verileri başarıyla çekildi. Toplam Müşteri: 2000, Riskli: 607
+2025-12-16 16:28:59.373 +03:00 [INF] Executing OkObjectResult, writing value of type 'CustomerAI.Core.DTOs.DashboardSummaryDto'.
+2025-12-16 16:28:59.389 +03:00 [INF] Executed action CustomerAI.API.Controllers.ReportsController.GetDashboardStats (CustomerAI.API) in 2430.4804ms
+2025-12-16 16:28:59.391 +03:00 [INF] Executed endpoint 'CustomerAI.API.Controllers.ReportsController.GetDashboardStats (CustomerAI.API)'
+2025-12-16 16:28:59.394 +03:00 [INF] HTTP GET /api/Reports/dashboard responded 200 in 2466.4421 ms
+2025-12-16 16:28:59.401 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7272/api/Reports/dashboard - 200 null application/json; charset=utf-8 2488.5243ms
+2025-12-16 16:57:22.035 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7272/api/Reports/export-risky-customers - null null
+2025-12-16 16:57:22.041 +03:00 [INF] CORS policy execution successful.
+2025-12-16 16:57:22.042 +03:00 [INF] Executing endpoint 'CustomerAI.API.Controllers.ReportsController.ExportRiskyCustomers (CustomerAI.API)'
+2025-12-16 16:57:22.050 +03:00 [INF] Route matched with {action = "ExportRiskyCustomers", controller = "Reports"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] ExportRiskyCustomers() on controller CustomerAI.API.Controllers.ReportsController (CustomerAI.API).
+2025-12-16 16:57:22.055 +03:00 [INF] Riskli müşteri raporu (Excel/CSV) için veriler hazırlanıyor...
+2025-12-16 16:57:23.032 +03:00 [INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[Id], [a].[ChurnScore], [a].[CreatedAt], [a].[CustomerId], [a].[IsDeleted], [a].[PredictionDate], [a].[RecommendedAction], [a].[RiskLevel], [a].[UpdatedAt], [c].[Id], [c].[City], [c].[CreatedAt], [c].[Email], [c].[IsDeleted], [c].[MembershipDate], [c].[Name], [c].[Phone], [c].[Sector], [c].[UpdatedAt]
+FROM [AiPredictionLogs] AS [a]
+INNER JOIN [Customers] AS [c] ON [a].[CustomerId] = [c].[Id]
+WHERE [a].[RiskLevel] IN (3, 4)
+2025-12-16 16:57:23.105 +03:00 [INF] Rapor başarıyla hazırlandı. Listeye 607 adet riskli müşteri eklendi.
+2025-12-16 16:57:23.107 +03:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[CustomerAI.Core.DTOs.RiskyCustomerExportDto, CustomerAI.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-12-16 16:57:23.117 +03:00 [INF] Executed action CustomerAI.API.Controllers.ReportsController.ExportRiskyCustomers (CustomerAI.API) in 1064.4318ms
+2025-12-16 16:57:23.118 +03:00 [INF] Executed endpoint 'CustomerAI.API.Controllers.ReportsController.ExportRiskyCustomers (CustomerAI.API)'
+2025-12-16 16:57:23.119 +03:00 [INF] HTTP GET /api/Reports/export-risky-customers responded 200 in 1076.8669 ms
+2025-12-16 16:57:23.121 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7272/api/Reports/export-risky-customers - 200 null application/json; charset=utf-8 1086.0209ms

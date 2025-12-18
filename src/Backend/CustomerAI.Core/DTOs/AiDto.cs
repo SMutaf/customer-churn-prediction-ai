@@ -21,5 +21,6 @@ namespace CustomerAI.Core.DTOs
         public double churn_risk_score { get; set; }
         public string segment { get; set; }
         public string ai_advice { get; set; }
+        public string main_reason { get; set; }
     }
 }

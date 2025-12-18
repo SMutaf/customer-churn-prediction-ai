@@ -66,7 +66,7 @@ namespace CustomerAI.Data.Seeds
             // GRUP 3 NORMAL MÜŞTERİLER 
             var randomFaker = new Faker<Customer>("tr")
                 .RuleFor(c => c.Name, f => f.Name.FullName())
-                .RuleFor(c => c.Email, f => f.Internet.Email())
+                .RuleFor(c => c.Email, f => f.Internet.Email()) 
                 .RuleFor(c => c.Phone, f => f.Phone.PhoneNumber())
                 .RuleFor(c => c.City, f => f.Address.City())
                 .RuleFor(c => c.Sector, f => f.PickRandom("Teknoloji", "Sağlık", "İnşaat"))

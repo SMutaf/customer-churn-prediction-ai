@@ -1,0 +1,297 @@
+2025-12-19 01:52:02.904 +03:00 [INF] Executed DbCommand (20ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-12-19 01:52:02.964 +03:00 [INF] Executed DbCommand (13ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-12-19 01:52:02.965 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-12-19 01:52:02.967 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-12-19 01:52:02.982 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2025-12-19 01:52:02.993 +03:00 [INF] Applying migration '20251218225057_AddedMainReasonToLogs'.
+2025-12-19 01:52:03.030 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [AiPredictionLogs] ADD [MainReason] nvarchar(max) NULL;
+2025-12-19 01:52:03.032 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20251218225057_AddedMainReasonToLogs', N'8.0.10');
+2025-12-19 01:58:08.156 +03:00 [INF] Now listening on: https://localhost:7272
+2025-12-19 01:58:08.187 +03:00 [INF] Now listening on: http://localhost:5236
+2025-12-19 01:58:08.259 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-12-19 01:58:08.261 +03:00 [INF] Hosting environment: Development
+2025-12-19 01:58:08.262 +03:00 [INF] Content root path: C:\Users\mutaf\Documents\GitHub\customer-churn-prediction-ai\src\Backend\CustomerAI.API
+2025-12-19 01:58:08.826 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7272/swagger - null null
+2025-12-19 01:58:08.961 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7272/swagger - 301 0 null 136.7954ms
+2025-12-19 01:58:08.969 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7272/swagger/index.html - null null
+2025-12-19 01:58:09.029 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7272/swagger/index.html - 200 null text/html;charset=utf-8 59.3779ms
+2025-12-19 01:58:09.049 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7272/_framework/aspnetcore-browser-refresh.js - null null
+2025-12-19 01:58:09.049 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7272/swagger/swagger-ui.css - null null
+2025-12-19 01:58:09.049 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7272/_vs/browserLink - null null
+2025-12-19 01:58:09.057 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7272/_framework/aspnetcore-browser-refresh.js - 200 16513 application/javascript; charset=utf-8 8.3959ms
+2025-12-19 01:58:09.074 +03:00 [INF] Sending file. Request path: '/swagger-ui.css'. Physical path: 'N/A'
+2025-12-19 01:58:09.078 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7272/swagger/swagger-ui.css - 499 152034 text/css 28.4936ms
+2025-12-19 01:58:09.107 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7272/_vs/browserLink - 200 null text/javascript; charset=UTF-8 57.6898ms
+2025-12-19 01:58:09.142 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7272/swagger/favicon-16x16.png - null null
+2025-12-19 01:58:09.147 +03:00 [INF] Sending file. Request path: '/favicon-16x16.png'. Physical path: 'N/A'
+2025-12-19 01:58:09.149 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7272/swagger/favicon-16x16.png - 499 665 image/png 6.311ms
+2025-12-19 01:58:09.238 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7272/swagger/v1/swagger.json - null null
+2025-12-19 01:58:09.249 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7272/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 11.0906ms
+2025-12-19 02:03:43.326 +03:00 [INF] Request starting HTTP/2 POST https://localhost:7272/api/Analytics/analyze/2 - null 0
+2025-12-19 02:03:43.333 +03:00 [INF] CORS policy execution successful.
+2025-12-19 02:03:43.340 +03:00 [INF] Executing endpoint 'CustomerAI.API.Controllers.AnalyticsController.AnalyzeCustomer (CustomerAI.API)'
+2025-12-19 02:03:43.367 +03:00 [INF] Route matched with {action = "AnalyzeCustomer", controller = "Analytics"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] AnalyzeCustomer(Int32) on controller CustomerAI.API.Controllers.AnalyticsController (CustomerAI.API).
+2025-12-19 02:03:43.476 +03:00 [INF] Müşteri analizi başlatılıyor. ID: 2
+2025-12-19 02:03:44.201 +03:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2025-12-19 02:03:45.204 +03:00 [INF] Executed DbCommand (39ms) [Parameters=[@__customerId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[City], [t].[CreatedAt], [t].[Email], [t].[IsDeleted], [t].[MembershipDate], [t].[Name], [t].[Phone], [t].[Sector], [t].[UpdatedAt], [o].[Id], [o].[CreatedAt], [o].[CustomerId], [o].[IsDeleted], [o].[OrderDate], [o].[OrderNumber], [o].[Status], [o].[TotalAmount], [o].[UpdatedAt], [i].[Id], [i].[CreatedAt], [i].[CustomerId], [i].[Date], [i].[IsDeleted], [i].[Notes], [i].[SentimentScore], [i].[Type], [i].[UpdatedAt]
+FROM (
+    SELECT TOP(1) [c].[Id], [c].[City], [c].[CreatedAt], [c].[Email], [c].[IsDeleted], [c].[MembershipDate], [c].[Name], [c].[Phone], [c].[Sector], [c].[UpdatedAt]
+    FROM [Customers] AS [c]
+    WHERE [c].[Id] = @__customerId_0
+) AS [t]
+LEFT JOIN [Orders] AS [o] ON [t].[Id] = [o].[CustomerId]
+LEFT JOIN [Interactions] AS [i] ON [t].[Id] = [i].[CustomerId]
+ORDER BY [t].[Id], [o].[Id]
+2025-12-19 02:03:45.330 +03:00 [INF] Python AI servisine tahmin isteği gönderiliyor. CustomerID: 2, Sektör: Teknoloji
+2025-12-19 02:03:45.339 +03:00 [INF] Start processing HTTP request POST http://127.0.0.1:5000/predict/churn
+2025-12-19 02:03:45.344 +03:00 [INF] Sending HTTP request POST http://127.0.0.1:5000/predict/churn
+2025-12-19 02:03:45.390 +03:00 [INF] Received HTTP response headers after 43.1248ms - 200
+2025-12-19 02:03:45.393 +03:00 [INF] End processing HTTP request after 54.2015ms - 200
+2025-12-19 02:03:45.412 +03:00 [INF] Python'dan tahmin başarıyla alındı. Churn Skoru: 0, Öneri: Teşekkür Maili Gönder (Sadık Müşteri)
+2025-12-19 02:03:45.543 +03:00 [INF] Executed DbCommand (7ms) [Parameters=[@p0='?' (DbType = Double), @p1='?' (DbType = DateTime2), @p2='?' (DbType = Int32), @p3='?' (DbType = Boolean), @p4='?' (Size = 4000), @p5='?' (DbType = DateTime2), @p6='?' (Size = 4000), @p7='?' (DbType = Int32), @p8='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [AiPredictionLogs] ([ChurnScore], [CreatedAt], [CustomerId], [IsDeleted], [MainReason], [PredictionDate], [RecommendedAction], [RiskLevel], [UpdatedAt])
+OUTPUT INSERTED.[Id]
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8);
+2025-12-19 02:03:45.565 +03:00 [INF] Executing OkObjectResult, writing value of type 'CustomerAI.Core.Entities.AiPredictionLog'.
+2025-12-19 02:03:45.603 +03:00 [INF] Executed action CustomerAI.API.Controllers.AnalyticsController.AnalyzeCustomer (CustomerAI.API) in 2229.9717ms
+2025-12-19 02:03:45.606 +03:00 [INF] Executed endpoint 'CustomerAI.API.Controllers.AnalyticsController.AnalyzeCustomer (CustomerAI.API)'
+2025-12-19 02:03:45.609 +03:00 [INF] HTTP POST /api/Analytics/analyze/2 responded 200 in 2269.3342 ms
+2025-12-19 02:03:45.618 +03:00 [INF] Request finished HTTP/2 POST https://localhost:7272/api/Analytics/analyze/2 - 200 null application/json; charset=utf-8 2291.8273ms
+2025-12-19 02:04:01.658 +03:00 [INF] Request starting HTTP/2 POST https://localhost:7272/api/Analytics/analyze/5 - null 0
+2025-12-19 02:04:01.664 +03:00 [INF] CORS policy execution successful.
+2025-12-19 02:04:01.665 +03:00 [INF] Executing endpoint 'CustomerAI.API.Controllers.AnalyticsController.AnalyzeCustomer (CustomerAI.API)'
+2025-12-19 02:04:01.666 +03:00 [INF] Route matched with {action = "AnalyzeCustomer", controller = "Analytics"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] AnalyzeCustomer(Int32) on controller CustomerAI.API.Controllers.AnalyticsController (CustomerAI.API).
+2025-12-19 02:04:01.670 +03:00 [INF] Müşteri analizi başlatılıyor. ID: 5
+2025-12-19 02:04:01.684 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__customerId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[City], [t].[CreatedAt], [t].[Email], [t].[IsDeleted], [t].[MembershipDate], [t].[Name], [t].[Phone], [t].[Sector], [t].[UpdatedAt], [o].[Id], [o].[CreatedAt], [o].[CustomerId], [o].[IsDeleted], [o].[OrderDate], [o].[OrderNumber], [o].[Status], [o].[TotalAmount], [o].[UpdatedAt], [i].[Id], [i].[CreatedAt], [i].[CustomerId], [i].[Date], [i].[IsDeleted], [i].[Notes], [i].[SentimentScore], [i].[Type], [i].[UpdatedAt]
+FROM (
+    SELECT TOP(1) [c].[Id], [c].[City], [c].[CreatedAt], [c].[Email], [c].[IsDeleted], [c].[MembershipDate], [c].[Name], [c].[Phone], [c].[Sector], [c].[UpdatedAt]
+    FROM [Customers] AS [c]
+    WHERE [c].[Id] = @__customerId_0
+) AS [t]
+LEFT JOIN [Orders] AS [o] ON [t].[Id] = [o].[CustomerId]
+LEFT JOIN [Interactions] AS [i] ON [t].[Id] = [i].[CustomerId]
+ORDER BY [t].[Id], [o].[Id]
+2025-12-19 02:04:01.688 +03:00 [INF] Python AI servisine tahmin isteği gönderiliyor. CustomerID: 5, Sektör: Teknoloji
+2025-12-19 02:04:01.690 +03:00 [INF] Start processing HTTP request POST http://127.0.0.1:5000/predict/churn
+2025-12-19 02:04:01.691 +03:00 [INF] Sending HTTP request POST http://127.0.0.1:5000/predict/churn
+2025-12-19 02:04:01.700 +03:00 [INF] Received HTTP response headers after 8.1504ms - 200
+2025-12-19 02:04:01.702 +03:00 [INF] End processing HTTP request after 11.5369ms - 200
+2025-12-19 02:04:01.704 +03:00 [INF] Python'dan tahmin başarıyla alındı. Churn Skoru: 0, Öneri: Teşekkür Maili Gönder (Sadık Müşteri)
+2025-12-19 02:04:01.709 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@p0='?' (DbType = Double), @p1='?' (DbType = DateTime2), @p2='?' (DbType = Int32), @p3='?' (DbType = Boolean), @p4='?' (Size = 4000), @p5='?' (DbType = DateTime2), @p6='?' (Size = 4000), @p7='?' (DbType = Int32), @p8='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [AiPredictionLogs] ([ChurnScore], [CreatedAt], [CustomerId], [IsDeleted], [MainReason], [PredictionDate], [RecommendedAction], [RiskLevel], [UpdatedAt])
+OUTPUT INSERTED.[Id]
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8);
+2025-12-19 02:04:01.712 +03:00 [INF] Executing OkObjectResult, writing value of type 'CustomerAI.Core.Entities.AiPredictionLog'.
+2025-12-19 02:04:01.715 +03:00 [INF] Executed action CustomerAI.API.Controllers.AnalyticsController.AnalyzeCustomer (CustomerAI.API) in 47.3448ms
+2025-12-19 02:04:01.716 +03:00 [INF] Executed endpoint 'CustomerAI.API.Controllers.AnalyticsController.AnalyzeCustomer (CustomerAI.API)'
+2025-12-19 02:04:01.717 +03:00 [INF] HTTP POST /api/Analytics/analyze/5 responded 200 in 52.3493 ms
+2025-12-19 02:04:01.719 +03:00 [INF] Request finished HTTP/2 POST https://localhost:7272/api/Analytics/analyze/5 - 200 null application/json; charset=utf-8 60.9445ms
+2025-12-19 02:04:03.384 +03:00 [INF] Request starting HTTP/2 POST https://localhost:7272/api/Analytics/analyze/5 - null 0
+2025-12-19 02:04:03.387 +03:00 [INF] CORS policy execution successful.
+2025-12-19 02:04:03.388 +03:00 [INF] Executing endpoint 'CustomerAI.API.Controllers.AnalyticsController.AnalyzeCustomer (CustomerAI.API)'
+2025-12-19 02:04:03.389 +03:00 [INF] Route matched with {action = "AnalyzeCustomer", controller = "Analytics"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] AnalyzeCustomer(Int32) on controller CustomerAI.API.Controllers.AnalyticsController (CustomerAI.API).
+2025-12-19 02:04:03.393 +03:00 [INF] Müşteri analizi başlatılıyor. ID: 5
+2025-12-19 02:04:03.437 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__customerId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[City], [t].[CreatedAt], [t].[Email], [t].[IsDeleted], [t].[MembershipDate], [t].[Name], [t].[Phone], [t].[Sector], [t].[UpdatedAt], [o].[Id], [o].[CreatedAt], [o].[CustomerId], [o].[IsDeleted], [o].[OrderDate], [o].[OrderNumber], [o].[Status], [o].[TotalAmount], [o].[UpdatedAt], [i].[Id], [i].[CreatedAt], [i].[CustomerId], [i].[Date], [i].[IsDeleted], [i].[Notes], [i].[SentimentScore], [i].[Type], [i].[UpdatedAt]
+FROM (
+    SELECT TOP(1) [c].[Id], [c].[City], [c].[CreatedAt], [c].[Email], [c].[IsDeleted], [c].[MembershipDate], [c].[Name], [c].[Phone], [c].[Sector], [c].[UpdatedAt]
+    FROM [Customers] AS [c]
+    WHERE [c].[Id] = @__customerId_0
+) AS [t]
+LEFT JOIN [Orders] AS [o] ON [t].[Id] = [o].[CustomerId]
+LEFT JOIN [Interactions] AS [i] ON [t].[Id] = [i].[CustomerId]
+ORDER BY [t].[Id], [o].[Id]
+2025-12-19 02:04:03.440 +03:00 [INF] Python AI servisine tahmin isteği gönderiliyor. CustomerID: 5, Sektör: Teknoloji
+2025-12-19 02:04:03.441 +03:00 [INF] Start processing HTTP request POST http://127.0.0.1:5000/predict/churn
+2025-12-19 02:04:03.442 +03:00 [INF] Sending HTTP request POST http://127.0.0.1:5000/predict/churn
+2025-12-19 02:04:03.451 +03:00 [INF] Received HTTP response headers after 7.5224ms - 200
+2025-12-19 02:04:03.452 +03:00 [INF] End processing HTTP request after 10.6444ms - 200
+2025-12-19 02:04:03.454 +03:00 [INF] Python'dan tahmin başarıyla alındı. Churn Skoru: 0, Öneri: Teşekkür Maili Gönder (Sadık Müşteri)
+2025-12-19 02:04:03.457 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[@p0='?' (DbType = Double), @p1='?' (DbType = DateTime2), @p2='?' (DbType = Int32), @p3='?' (DbType = Boolean), @p4='?' (Size = 4000), @p5='?' (DbType = DateTime2), @p6='?' (Size = 4000), @p7='?' (DbType = Int32), @p8='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [AiPredictionLogs] ([ChurnScore], [CreatedAt], [CustomerId], [IsDeleted], [MainReason], [PredictionDate], [RecommendedAction], [RiskLevel], [UpdatedAt])
+OUTPUT INSERTED.[Id]
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8);
+2025-12-19 02:04:03.459 +03:00 [INF] Executing OkObjectResult, writing value of type 'CustomerAI.Core.Entities.AiPredictionLog'.
+2025-12-19 02:04:03.461 +03:00 [INF] Executed action CustomerAI.API.Controllers.AnalyticsController.AnalyzeCustomer (CustomerAI.API) in 70.4904ms
+2025-12-19 02:04:03.463 +03:00 [INF] Executed endpoint 'CustomerAI.API.Controllers.AnalyticsController.AnalyzeCustomer (CustomerAI.API)'
+2025-12-19 02:04:03.464 +03:00 [INF] HTTP POST /api/Analytics/analyze/5 responded 200 in 76.0627 ms
+2025-12-19 02:04:03.465 +03:00 [INF] Request finished HTTP/2 POST https://localhost:7272/api/Analytics/analyze/5 - 200 null application/json; charset=utf-8 81.7155ms
+2025-12-19 02:04:08.141 +03:00 [INF] Request starting HTTP/2 POST https://localhost:7272/api/Analytics/analyze/25 - null 0
+2025-12-19 02:04:08.144 +03:00 [INF] CORS policy execution successful.
+2025-12-19 02:04:08.144 +03:00 [INF] Executing endpoint 'CustomerAI.API.Controllers.AnalyticsController.AnalyzeCustomer (CustomerAI.API)'
+2025-12-19 02:04:08.145 +03:00 [INF] Route matched with {action = "AnalyzeCustomer", controller = "Analytics"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] AnalyzeCustomer(Int32) on controller CustomerAI.API.Controllers.AnalyticsController (CustomerAI.API).
+2025-12-19 02:04:08.147 +03:00 [INF] Müşteri analizi başlatılıyor. ID: 25
+2025-12-19 02:04:08.152 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[@__customerId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[City], [t].[CreatedAt], [t].[Email], [t].[IsDeleted], [t].[MembershipDate], [t].[Name], [t].[Phone], [t].[Sector], [t].[UpdatedAt], [o].[Id], [o].[CreatedAt], [o].[CustomerId], [o].[IsDeleted], [o].[OrderDate], [o].[OrderNumber], [o].[Status], [o].[TotalAmount], [o].[UpdatedAt], [i].[Id], [i].[CreatedAt], [i].[CustomerId], [i].[Date], [i].[IsDeleted], [i].[Notes], [i].[SentimentScore], [i].[Type], [i].[UpdatedAt]
+FROM (
+    SELECT TOP(1) [c].[Id], [c].[City], [c].[CreatedAt], [c].[Email], [c].[IsDeleted], [c].[MembershipDate], [c].[Name], [c].[Phone], [c].[Sector], [c].[UpdatedAt]
+    FROM [Customers] AS [c]
+    WHERE [c].[Id] = @__customerId_0
+) AS [t]
+LEFT JOIN [Orders] AS [o] ON [t].[Id] = [o].[CustomerId]
+LEFT JOIN [Interactions] AS [i] ON [t].[Id] = [i].[CustomerId]
+ORDER BY [t].[Id], [o].[Id]
+2025-12-19 02:04:08.154 +03:00 [INF] Python AI servisine tahmin isteği gönderiliyor. CustomerID: 25, Sektör: Finans
+2025-12-19 02:04:08.155 +03:00 [INF] Start processing HTTP request POST http://127.0.0.1:5000/predict/churn
+2025-12-19 02:04:08.156 +03:00 [INF] Sending HTTP request POST http://127.0.0.1:5000/predict/churn
+2025-12-19 02:04:08.165 +03:00 [INF] Received HTTP response headers after 7.392ms - 200
+2025-12-19 02:04:08.166 +03:00 [INF] End processing HTTP request after 10.5143ms - 200
+2025-12-19 02:04:08.167 +03:00 [INF] Python'dan tahmin başarıyla alındı. Churn Skoru: 0, Öneri: Teşekkür Maili Gönder (Sadık Müşteri)
+2025-12-19 02:04:08.172 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@p0='?' (DbType = Double), @p1='?' (DbType = DateTime2), @p2='?' (DbType = Int32), @p3='?' (DbType = Boolean), @p4='?' (Size = 4000), @p5='?' (DbType = DateTime2), @p6='?' (Size = 4000), @p7='?' (DbType = Int32), @p8='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [AiPredictionLogs] ([ChurnScore], [CreatedAt], [CustomerId], [IsDeleted], [MainReason], [PredictionDate], [RecommendedAction], [RiskLevel], [UpdatedAt])
+OUTPUT INSERTED.[Id]
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8);
+2025-12-19 02:04:08.174 +03:00 [INF] Executing OkObjectResult, writing value of type 'CustomerAI.Core.Entities.AiPredictionLog'.
+2025-12-19 02:04:08.175 +03:00 [INF] Executed action CustomerAI.API.Controllers.AnalyticsController.AnalyzeCustomer (CustomerAI.API) in 27.9095ms
+2025-12-19 02:04:08.177 +03:00 [INF] Executed endpoint 'CustomerAI.API.Controllers.AnalyticsController.AnalyzeCustomer (CustomerAI.API)'
+2025-12-19 02:04:08.177 +03:00 [INF] HTTP POST /api/Analytics/analyze/25 responded 200 in 33.1297 ms
+2025-12-19 02:04:08.179 +03:00 [INF] Request finished HTTP/2 POST https://localhost:7272/api/Analytics/analyze/25 - 200 null application/json; charset=utf-8 38.1945ms
+2025-12-19 02:04:09.637 +03:00 [INF] Request starting HTTP/2 POST https://localhost:7272/api/Analytics/analyze/25 - null 0
+2025-12-19 02:04:09.641 +03:00 [INF] CORS policy execution successful.
+2025-12-19 02:04:09.643 +03:00 [INF] Executing endpoint 'CustomerAI.API.Controllers.AnalyticsController.AnalyzeCustomer (CustomerAI.API)'
+2025-12-19 02:04:09.644 +03:00 [INF] Route matched with {action = "AnalyzeCustomer", controller = "Analytics"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] AnalyzeCustomer(Int32) on controller CustomerAI.API.Controllers.AnalyticsController (CustomerAI.API).
+2025-12-19 02:04:09.646 +03:00 [INF] Müşteri analizi başlatılıyor. ID: 25
+2025-12-19 02:04:09.648 +03:00 [INF] Executed DbCommand (0ms) [Parameters=[@__customerId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[City], [t].[CreatedAt], [t].[Email], [t].[IsDeleted], [t].[MembershipDate], [t].[Name], [t].[Phone], [t].[Sector], [t].[UpdatedAt], [o].[Id], [o].[CreatedAt], [o].[CustomerId], [o].[IsDeleted], [o].[OrderDate], [o].[OrderNumber], [o].[Status], [o].[TotalAmount], [o].[UpdatedAt], [i].[Id], [i].[CreatedAt], [i].[CustomerId], [i].[Date], [i].[IsDeleted], [i].[Notes], [i].[SentimentScore], [i].[Type], [i].[UpdatedAt]
+FROM (
+    SELECT TOP(1) [c].[Id], [c].[City], [c].[CreatedAt], [c].[Email], [c].[IsDeleted], [c].[MembershipDate], [c].[Name], [c].[Phone], [c].[Sector], [c].[UpdatedAt]
+    FROM [Customers] AS [c]
+    WHERE [c].[Id] = @__customerId_0
+) AS [t]
+LEFT JOIN [Orders] AS [o] ON [t].[Id] = [o].[CustomerId]
+LEFT JOIN [Interactions] AS [i] ON [t].[Id] = [i].[CustomerId]
+ORDER BY [t].[Id], [o].[Id]
+2025-12-19 02:04:09.651 +03:00 [INF] Python AI servisine tahmin isteği gönderiliyor. CustomerID: 25, Sektör: Finans
+2025-12-19 02:04:09.652 +03:00 [INF] Start processing HTTP request POST http://127.0.0.1:5000/predict/churn
+2025-12-19 02:04:09.653 +03:00 [INF] Sending HTTP request POST http://127.0.0.1:5000/predict/churn
+2025-12-19 02:04:09.662 +03:00 [INF] Received HTTP response headers after 8.3477ms - 200
+2025-12-19 02:04:09.664 +03:00 [INF] End processing HTTP request after 11.5594ms - 200
+2025-12-19 02:04:09.665 +03:00 [INF] Python'dan tahmin başarıyla alındı. Churn Skoru: 0, Öneri: Teşekkür Maili Gönder (Sadık Müşteri)
+2025-12-19 02:04:09.674 +03:00 [INF] Executed DbCommand (4ms) [Parameters=[@p0='?' (DbType = Double), @p1='?' (DbType = DateTime2), @p2='?' (DbType = Int32), @p3='?' (DbType = Boolean), @p4='?' (Size = 4000), @p5='?' (DbType = DateTime2), @p6='?' (Size = 4000), @p7='?' (DbType = Int32), @p8='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [AiPredictionLogs] ([ChurnScore], [CreatedAt], [CustomerId], [IsDeleted], [MainReason], [PredictionDate], [RecommendedAction], [RiskLevel], [UpdatedAt])
+OUTPUT INSERTED.[Id]
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8);
+2025-12-19 02:04:09.676 +03:00 [INF] Executing OkObjectResult, writing value of type 'CustomerAI.Core.Entities.AiPredictionLog'.
+2025-12-19 02:04:09.678 +03:00 [INF] Executed action CustomerAI.API.Controllers.AnalyticsController.AnalyzeCustomer (CustomerAI.API) in 32.5475ms
+2025-12-19 02:04:09.679 +03:00 [INF] Executed endpoint 'CustomerAI.API.Controllers.AnalyticsController.AnalyzeCustomer (CustomerAI.API)'
+2025-12-19 02:04:09.681 +03:00 [INF] HTTP POST /api/Analytics/analyze/25 responded 200 in 38.0445 ms
+2025-12-19 02:04:09.682 +03:00 [INF] Request finished HTTP/2 POST https://localhost:7272/api/Analytics/analyze/25 - 200 null application/json; charset=utf-8 45.0514ms
+2025-12-19 02:04:13.856 +03:00 [INF] Request starting HTTP/2 POST https://localhost:7272/api/Analytics/analyze/98 - null 0
+2025-12-19 02:04:13.860 +03:00 [INF] CORS policy execution successful.
+2025-12-19 02:04:13.861 +03:00 [INF] Executing endpoint 'CustomerAI.API.Controllers.AnalyticsController.AnalyzeCustomer (CustomerAI.API)'
+2025-12-19 02:04:13.862 +03:00 [INF] Route matched with {action = "AnalyzeCustomer", controller = "Analytics"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] AnalyzeCustomer(Int32) on controller CustomerAI.API.Controllers.AnalyticsController (CustomerAI.API).
+2025-12-19 02:04:13.865 +03:00 [INF] Müşteri analizi başlatılıyor. ID: 98
+2025-12-19 02:04:13.873 +03:00 [INF] Executed DbCommand (5ms) [Parameters=[@__customerId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[City], [t].[CreatedAt], [t].[Email], [t].[IsDeleted], [t].[MembershipDate], [t].[Name], [t].[Phone], [t].[Sector], [t].[UpdatedAt], [o].[Id], [o].[CreatedAt], [o].[CustomerId], [o].[IsDeleted], [o].[OrderDate], [o].[OrderNumber], [o].[Status], [o].[TotalAmount], [o].[UpdatedAt], [i].[Id], [i].[CreatedAt], [i].[CustomerId], [i].[Date], [i].[IsDeleted], [i].[Notes], [i].[SentimentScore], [i].[Type], [i].[UpdatedAt]
+FROM (
+    SELECT TOP(1) [c].[Id], [c].[City], [c].[CreatedAt], [c].[Email], [c].[IsDeleted], [c].[MembershipDate], [c].[Name], [c].[Phone], [c].[Sector], [c].[UpdatedAt]
+    FROM [Customers] AS [c]
+    WHERE [c].[Id] = @__customerId_0
+) AS [t]
+LEFT JOIN [Orders] AS [o] ON [t].[Id] = [o].[CustomerId]
+LEFT JOIN [Interactions] AS [i] ON [t].[Id] = [i].[CustomerId]
+ORDER BY [t].[Id], [o].[Id]
+2025-12-19 02:04:13.876 +03:00 [INF] Python AI servisine tahmin isteği gönderiliyor. CustomerID: 98, Sektör: Teknoloji
+2025-12-19 02:04:13.878 +03:00 [INF] Start processing HTTP request POST http://127.0.0.1:5000/predict/churn
+2025-12-19 02:04:13.879 +03:00 [INF] Sending HTTP request POST http://127.0.0.1:5000/predict/churn
+2025-12-19 02:04:13.889 +03:00 [INF] Received HTTP response headers after 8.6897ms - 200
+2025-12-19 02:04:13.891 +03:00 [INF] End processing HTTP request after 13.1713ms - 200
+2025-12-19 02:04:13.893 +03:00 [INF] Python'dan tahmin başarıyla alındı. Churn Skoru: 0, Öneri: Teşekkür Maili Gönder (Sadık Müşteri)
+2025-12-19 02:04:13.896 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@p0='?' (DbType = Double), @p1='?' (DbType = DateTime2), @p2='?' (DbType = Int32), @p3='?' (DbType = Boolean), @p4='?' (Size = 4000), @p5='?' (DbType = DateTime2), @p6='?' (Size = 4000), @p7='?' (DbType = Int32), @p8='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [AiPredictionLogs] ([ChurnScore], [CreatedAt], [CustomerId], [IsDeleted], [MainReason], [PredictionDate], [RecommendedAction], [RiskLevel], [UpdatedAt])
+OUTPUT INSERTED.[Id]
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8);
+2025-12-19 02:04:13.898 +03:00 [INF] Executing OkObjectResult, writing value of type 'CustomerAI.Core.Entities.AiPredictionLog'.
+2025-12-19 02:04:13.899 +03:00 [INF] Executed action CustomerAI.API.Controllers.AnalyticsController.AnalyzeCustomer (CustomerAI.API) in 35.0992ms
+2025-12-19 02:04:13.901 +03:00 [INF] Executed endpoint 'CustomerAI.API.Controllers.AnalyticsController.AnalyzeCustomer (CustomerAI.API)'
+2025-12-19 02:04:13.902 +03:00 [INF] HTTP POST /api/Analytics/analyze/98 responded 200 in 40.8229 ms
+2025-12-19 02:04:13.904 +03:00 [INF] Request finished HTTP/2 POST https://localhost:7272/api/Analytics/analyze/98 - 200 null application/json; charset=utf-8 48.5928ms
+2025-12-19 02:04:14.641 +03:00 [INF] Request starting HTTP/2 POST https://localhost:7272/api/Analytics/analyze/98 - null 0
+2025-12-19 02:04:14.644 +03:00 [INF] CORS policy execution successful.
+2025-12-19 02:04:14.645 +03:00 [INF] Executing endpoint 'CustomerAI.API.Controllers.AnalyticsController.AnalyzeCustomer (CustomerAI.API)'
+2025-12-19 02:04:14.646 +03:00 [INF] Route matched with {action = "AnalyzeCustomer", controller = "Analytics"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] AnalyzeCustomer(Int32) on controller CustomerAI.API.Controllers.AnalyticsController (CustomerAI.API).
+2025-12-19 02:04:14.648 +03:00 [INF] Müşteri analizi başlatılıyor. ID: 98
+2025-12-19 02:04:14.651 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__customerId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[City], [t].[CreatedAt], [t].[Email], [t].[IsDeleted], [t].[MembershipDate], [t].[Name], [t].[Phone], [t].[Sector], [t].[UpdatedAt], [o].[Id], [o].[CreatedAt], [o].[CustomerId], [o].[IsDeleted], [o].[OrderDate], [o].[OrderNumber], [o].[Status], [o].[TotalAmount], [o].[UpdatedAt], [i].[Id], [i].[CreatedAt], [i].[CustomerId], [i].[Date], [i].[IsDeleted], [i].[Notes], [i].[SentimentScore], [i].[Type], [i].[UpdatedAt]
+FROM (
+    SELECT TOP(1) [c].[Id], [c].[City], [c].[CreatedAt], [c].[Email], [c].[IsDeleted], [c].[MembershipDate], [c].[Name], [c].[Phone], [c].[Sector], [c].[UpdatedAt]
+    FROM [Customers] AS [c]
+    WHERE [c].[Id] = @__customerId_0
+) AS [t]
+LEFT JOIN [Orders] AS [o] ON [t].[Id] = [o].[CustomerId]
+LEFT JOIN [Interactions] AS [i] ON [t].[Id] = [i].[CustomerId]
+ORDER BY [t].[Id], [o].[Id]
+2025-12-19 02:04:14.653 +03:00 [INF] Python AI servisine tahmin isteği gönderiliyor. CustomerID: 98, Sektör: Teknoloji
+2025-12-19 02:04:14.654 +03:00 [INF] Start processing HTTP request POST http://127.0.0.1:5000/predict/churn
+2025-12-19 02:04:14.656 +03:00 [INF] Sending HTTP request POST http://127.0.0.1:5000/predict/churn
+2025-12-19 02:04:14.667 +03:00 [INF] Received HTTP response headers after 9.7834ms - 200
+2025-12-19 02:04:14.668 +03:00 [INF] End processing HTTP request after 13.9354ms - 200
+2025-12-19 02:04:14.669 +03:00 [INF] Python'dan tahmin başarıyla alındı. Churn Skoru: 0, Öneri: Teşekkür Maili Gönder (Sadık Müşteri)
+2025-12-19 02:04:14.673 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[@p0='?' (DbType = Double), @p1='?' (DbType = DateTime2), @p2='?' (DbType = Int32), @p3='?' (DbType = Boolean), @p4='?' (Size = 4000), @p5='?' (DbType = DateTime2), @p6='?' (Size = 4000), @p7='?' (DbType = Int32), @p8='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [AiPredictionLogs] ([ChurnScore], [CreatedAt], [CustomerId], [IsDeleted], [MainReason], [PredictionDate], [RecommendedAction], [RiskLevel], [UpdatedAt])
+OUTPUT INSERTED.[Id]
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8);
+2025-12-19 02:04:14.676 +03:00 [INF] Executing OkObjectResult, writing value of type 'CustomerAI.Core.Entities.AiPredictionLog'.
+2025-12-19 02:04:14.677 +03:00 [INF] Executed action CustomerAI.API.Controllers.AnalyticsController.AnalyzeCustomer (CustomerAI.API) in 29.0974ms
+2025-12-19 02:04:14.678 +03:00 [INF] Executed endpoint 'CustomerAI.API.Controllers.AnalyticsController.AnalyzeCustomer (CustomerAI.API)'
+2025-12-19 02:04:14.679 +03:00 [INF] HTTP POST /api/Analytics/analyze/98 responded 200 in 34.2946 ms
+2025-12-19 02:04:14.681 +03:00 [INF] Request finished HTTP/2 POST https://localhost:7272/api/Analytics/analyze/98 - 200 null application/json; charset=utf-8 40.2119ms
+2025-12-19 02:04:20.402 +03:00 [INF] Request starting HTTP/2 POST https://localhost:7272/api/Analytics/analyze/356 - null 0
+2025-12-19 02:04:20.404 +03:00 [INF] CORS policy execution successful.
+2025-12-19 02:04:20.405 +03:00 [INF] Executing endpoint 'CustomerAI.API.Controllers.AnalyticsController.AnalyzeCustomer (CustomerAI.API)'
+2025-12-19 02:04:20.406 +03:00 [INF] Route matched with {action = "AnalyzeCustomer", controller = "Analytics"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] AnalyzeCustomer(Int32) on controller CustomerAI.API.Controllers.AnalyticsController (CustomerAI.API).
+2025-12-19 02:04:20.409 +03:00 [INF] Müşteri analizi başlatılıyor. ID: 356
+2025-12-19 02:04:20.418 +03:00 [INF] Executed DbCommand (8ms) [Parameters=[@__customerId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [t].[Id], [t].[City], [t].[CreatedAt], [t].[Email], [t].[IsDeleted], [t].[MembershipDate], [t].[Name], [t].[Phone], [t].[Sector], [t].[UpdatedAt], [o].[Id], [o].[CreatedAt], [o].[CustomerId], [o].[IsDeleted], [o].[OrderDate], [o].[OrderNumber], [o].[Status], [o].[TotalAmount], [o].[UpdatedAt], [i].[Id], [i].[CreatedAt], [i].[CustomerId], [i].[Date], [i].[IsDeleted], [i].[Notes], [i].[SentimentScore], [i].[Type], [i].[UpdatedAt]
+FROM (
+    SELECT TOP(1) [c].[Id], [c].[City], [c].[CreatedAt], [c].[Email], [c].[IsDeleted], [c].[MembershipDate], [c].[Name], [c].[Phone], [c].[Sector], [c].[UpdatedAt]
+    FROM [Customers] AS [c]
+    WHERE [c].[Id] = @__customerId_0
+) AS [t]
+LEFT JOIN [Orders] AS [o] ON [t].[Id] = [o].[CustomerId]
+LEFT JOIN [Interactions] AS [i] ON [t].[Id] = [i].[CustomerId]
+ORDER BY [t].[Id], [o].[Id]
+2025-12-19 02:04:20.421 +03:00 [INF] Python AI servisine tahmin isteği gönderiliyor. CustomerID: 356, Sektör: Perakende
+2025-12-19 02:04:20.422 +03:00 [INF] Start processing HTTP request POST http://127.0.0.1:5000/predict/churn
+2025-12-19 02:04:20.423 +03:00 [INF] Sending HTTP request POST http://127.0.0.1:5000/predict/churn
+2025-12-19 02:04:20.433 +03:00 [INF] Received HTTP response headers after 8.3999ms - 200
+2025-12-19 02:04:20.434 +03:00 [INF] End processing HTTP request after 11.5845ms - 200
+2025-12-19 02:04:20.436 +03:00 [INF] Python'dan tahmin başarıyla alındı. Churn Skoru: 1, Öneri: ACİL: Müşteri Temsilcisi Aramalı (Şikayet Çözümü)
+2025-12-19 02:04:20.437 +03:00 [WRN] DİKKAT! Yüksek Riskli Müşteri Tespit Edildi! ID: 356, Skor: 1
+2025-12-19 02:04:20.441 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@p0='?' (DbType = Double), @p1='?' (DbType = DateTime2), @p2='?' (DbType = Int32), @p3='?' (DbType = Boolean), @p4='?' (Size = 4000), @p5='?' (DbType = DateTime2), @p6='?' (Size = 4000), @p7='?' (DbType = Int32), @p8='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [AiPredictionLogs] ([ChurnScore], [CreatedAt], [CustomerId], [IsDeleted], [MainReason], [PredictionDate], [RecommendedAction], [RiskLevel], [UpdatedAt])
+OUTPUT INSERTED.[Id]
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8);
+2025-12-19 02:04:20.443 +03:00 [INF] Executing OkObjectResult, writing value of type 'CustomerAI.Core.Entities.AiPredictionLog'.
+2025-12-19 02:04:20.444 +03:00 [INF] Executed action CustomerAI.API.Controllers.AnalyticsController.AnalyzeCustomer (CustomerAI.API) in 35.8721ms
+2025-12-19 02:04:20.445 +03:00 [INF] Executed endpoint 'CustomerAI.API.Controllers.AnalyticsController.AnalyzeCustomer (CustomerAI.API)'
+2025-12-19 02:04:20.446 +03:00 [INF] HTTP POST /api/Analytics/analyze/356 responded 200 in 41.1686 ms
+2025-12-19 02:04:20.448 +03:00 [INF] Request finished HTTP/2 POST https://localhost:7272/api/Analytics/analyze/356 - 200 null application/json; charset=utf-8 46.4962ms
