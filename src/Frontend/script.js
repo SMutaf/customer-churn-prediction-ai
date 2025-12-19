@@ -153,12 +153,15 @@ async function downloadRiskyReport() {
         }
 
         let csvContent = "\uFEFF";
-        csvContent += "Musteri Adi;Email;Telefon;Risk Skoru;Risk Seviyesi;AI Onerisi\n"; 
+        csvContent += "Musteri Adi;Email;Telefon;Risk Skoru;Risk Seviyesi;AI Onerisi;Risk Nedeni\n";
 
         data.forEach(row => {
             const cleanAction = row.recommendedAction ? row.recommendedAction.replace(/;/g, " -") : "";
 
-            const line = `${row.customerName};${row.email};${row.phone};${row.churnScore};${row.riskLevel};${cleanAction}`;
+            const cleanReason = row.mainReason ? row.mainReason.replace(/;/g, " -") : "Belirtilmemis";
+
+            const line = `${row.customerName};${row.email};${row.phone};${row.churnScore};${row.riskLevel};${cleanAction};${cleanReason}`;
+            
             csvContent += line + "\n";
         });
 
