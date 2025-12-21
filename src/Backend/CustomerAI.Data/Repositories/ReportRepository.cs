@@ -9,7 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace CustomerAI.Data.Repositories
-{
+{ 
     public class ReportRepository : IReportRepository
     {
         private readonly CustomerAiDbContext _context;
