@@ -30,3 +30,6 @@ Thumbs.db
 
 # --- Log Files ---
 *.log
+logs/
+Log/
+src/Backend/CustomerAI.API/logs/
