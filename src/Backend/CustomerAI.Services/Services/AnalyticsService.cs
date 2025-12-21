@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Azure;
 using CustomerAI.Core.DTOs;
 using CustomerAI.Core.Entities;
 using CustomerAI.Core.Enums;
@@ -9,6 +7,9 @@ using CustomerAI.Data.Context;
 using CustomerAI.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 
 namespace CustomerAI.Services.Concrete
@@ -69,6 +70,9 @@ namespace CustomerAI.Services.Concrete
             {
                 _logger.LogWarning("DİKKAT! Yüksek Riskli Müşteri Tespit Edildi! ID: {Id}, Skor: {Score}", customer.Id, aiResponse.churn_risk_score);
             }
+            // daha sonra sill
+            if (string.IsNullOrEmpty(aiResponse.ai_advice))
+                throw new Exception("AI Advice boş geldi");
 
             var predictionLog = new AiPredictionLog
             {

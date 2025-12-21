@@ -20,63 +20,167 @@ namespace CustomerAI.Data.Seeds
 
         public async Task SeedAsync(int count = 1000)
         {
-            // veri tabanı doluysa işlem yapma
-           // if (_context.Customers.Any()) return;
-
             var customers = new List<Customer>();
 
-            // GRUP 1 MUTLU MÜŞTERİLER 
+            // vip müşteriler - 15%
+            var vipFaker = new Faker<Customer>("tr")
+                .RuleFor(c => c.Name, f => f.Name.FullName())
+                .RuleFor(c => c.Email, f => f.Internet.Email())
+                .RuleFor(c => c.Phone, f => f.Phone.PhoneNumber())
+                .RuleFor(c => c.City, f => f.PickRandom("Istanbul", "Ankara", "Izmir", "Antalya"))
+                .RuleFor(c => c.Sector, f => f.PickRandom("Teknoloji", "Finans", "Saglik"))
+                .RuleFor(c => c.MembershipDate, f => f.Date.Past(4, DateTime.Now.AddYears(-1)))
+                .RuleFor(c => c.CreatedAt, f => DateTime.Now)
+                .RuleFor(c => c.IsDeleted, false);
+
+            for (int i = 0; i < count * 0.15; i++)
+            {
+                var customer = vipFaker.Generate();
+                customer.Orders = GenerateOrders(customer.Id,
+                    orderCount: new Faker().Random.Int(8, 15),
+                    minAmount: 3000,
+                    maxAmount: 8000,
+                    baseDate: DateTime.Now.AddDays(-15));
+
+                customer.Interactions = GenerateInteractions(customer.Id,
+                    InteractionType.Support,
+                    sentiment: new Faker().Random.Float(4.0f, 5.0f));
+
+                customers.Add(customer);
+            }
+
+            // memnun müşteriler - 25%
             var happyFaker = new Faker<Customer>("tr")
                 .RuleFor(c => c.Name, f => f.Name.FullName())
                 .RuleFor(c => c.Email, f => f.Internet.Email())
                 .RuleFor(c => c.Phone, f => f.Phone.PhoneNumber())
                 .RuleFor(c => c.City, f => f.Address.City())
-                .RuleFor(c => c.Sector, f => f.PickRandom("Teknoloji", "Finans", "Eğitim"))
-                .RuleFor(c => c.MembershipDate, f => f.Date.Past(3)); // 3 yıl içinde üye olmuş
+                .RuleFor(c => c.Sector, f => f.PickRandom("Teknoloji", "Finans", "Egitim", "E-Ticaret"))
+                .RuleFor(c => c.MembershipDate, f => f.Date.Past(3))
+                .RuleFor(c => c.CreatedAt, f => DateTime.Now)
+                .RuleFor(c => c.IsDeleted, false);
 
-            for (int i = 0; i < count * 0.3; i++)
+            for (int i = 0; i < count * 0.25; i++)
             {
                 var customer = happyFaker.Generate();
-                // sık sipariş, yeni tarih
-                customer.Orders = GenerateOrders(customer.Id, 5, 2000, DateTime.Now.AddDays(-30));
-                // pozitif etkileşim
-                customer.Interactions = GenerateInteractions(customer.Id, InteractionType.Support, 0.8f);
+                customer.Orders = GenerateOrders(customer.Id,
+                    orderCount: new Faker().Random.Int(4, 8),
+                    minAmount: 1500,
+                    maxAmount: 4000,
+                    baseDate: DateTime.Now.AddDays(new Faker().Random.Int(-45, -20)));
+
+                customer.Interactions = GenerateInteractions(customer.Id,
+                    InteractionType.Support,
+                    sentiment: new Faker().Random.Float(3.5f, 4.5f));
+
                 customers.Add(customer);
             }
 
-            //  GRUP 2 RİSKLİ  MÜŞTERİLER 
-            var churnFaker = new Faker<Customer>("tr")
+            // normal müşteriler - 30%
+            var normalFaker = new Faker<Customer>("tr")
+                .RuleFor(c => c.Name, f => f.Name.FullName())
+                .RuleFor(c => c.Email, f => f.Internet.Email())
+                .RuleFor(c => c.Phone, f => f.Phone.PhoneNumber())
+                .RuleFor(c => c.City, f => f.Address.City())
+                .RuleFor(c => c.Sector, f => f.PickRandom("Perakende", "Hizmet", "Turizm", "Insaat"))
+                .RuleFor(c => c.MembershipDate, f => f.Date.Past(2))
+                .RuleFor(c => c.CreatedAt, f => DateTime.Now)
+                .RuleFor(c => c.IsDeleted, false);
+
+            for (int i = 0; i < count * 0.30; i++)
+            {
+                var customer = normalFaker.Generate();
+                customer.Orders = GenerateOrders(customer.Id,
+                    orderCount: new Faker().Random.Int(2, 5),
+                    minAmount: 800,
+                    maxAmount: 2500,
+                    baseDate: DateTime.Now.AddDays(new Faker().Random.Int(-90, -50)));
+
+                customer.Interactions = GenerateInteractions(customer.Id,
+                    new Faker().PickRandom(InteractionType.Call, InteractionType.Email, InteractionType.Support),
+                    sentiment: new Faker().Random.Float(2.5f, 3.8f));
+
+                customers.Add(customer);
+            }
+
+            // risk taşıyan müşteriler - 15%
+            var coolingFaker = new Faker<Customer>("tr")
                 .RuleFor(c => c.Name, f => f.Name.FullName())
                 .RuleFor(c => c.Email, f => f.Internet.Email())
                 .RuleFor(c => c.Phone, f => f.Phone.PhoneNumber())
                 .RuleFor(c => c.City, f => f.Address.City())
                 .RuleFor(c => c.Sector, f => f.PickRandom("Perakende", "Hizmet"))
-                .RuleFor(c => c.MembershipDate, f => f.Date.Past(5)); // Eski üye
+                .RuleFor(c => c.MembershipDate, f => f.Date.Past(3, DateTime.Now.AddYears(-1)))
+                .RuleFor(c => c.CreatedAt, f => DateTime.Now)
+                .RuleFor(c => c.IsDeleted, false);
 
-            for (int i = 0; i < count * 0.3; i++)
+            for (int i = 0; i < count * 0.15; i++)
             {
-                var customer = churnFaker.Generate();
-                // az sipariş
-                customer.Orders = GenerateOrders(customer.Id, 1, 100, DateTime.Now.AddDays(-400));
-                // şikayet
-                customer.Interactions = GenerateInteractions(customer.Id, InteractionType.Complaint, -0.9f);
+                var customer = coolingFaker.Generate();
+                customer.Orders = GenerateOrders(customer.Id,
+                    orderCount: new Faker().Random.Int(1, 3),
+                    minAmount: 300,
+                    maxAmount: 1200,
+                    baseDate: DateTime.Now.AddDays(new Faker().Random.Int(-200, -120)));
+
+                customer.Interactions = GenerateInteractions(customer.Id,
+                    new Faker().PickRandom(InteractionType.Call, InteractionType.Support),
+                    sentiment: new Faker().Random.Float(1.8f, 3.0f));
+
                 customers.Add(customer);
             }
 
-            // GRUP 3 NORMAL MÜŞTERİLER 
-            var randomFaker = new Faker<Customer>("tr")
+            // kritik müşteri - 10%
+            var churnFaker = new Faker<Customer>("tr")
                 .RuleFor(c => c.Name, f => f.Name.FullName())
-                .RuleFor(c => c.Email, f => f.Internet.Email()) 
+                .RuleFor(c => c.Email, f => f.Internet.Email())
                 .RuleFor(c => c.Phone, f => f.Phone.PhoneNumber())
                 .RuleFor(c => c.City, f => f.Address.City())
-                .RuleFor(c => c.Sector, f => f.PickRandom("Teknoloji", "Sağlık", "İnşaat"))
-                .RuleFor(c => c.MembershipDate, f => f.Date.Past(4));
+                .RuleFor(c => c.Sector, f => f.PickRandom("Perakende", "Hizmet", "Lojistik"))
+                .RuleFor(c => c.MembershipDate, f => f.Date.Past(5, DateTime.Now.AddYears(-2)))
+                .RuleFor(c => c.CreatedAt, f => DateTime.Now)
+                .RuleFor(c => c.IsDeleted, false);
 
-            for (int i = 0; i < count * 0.4; i++)
+            for (int i = 0; i < count * 0.10; i++)
             {
-                var customer = randomFaker.Generate();
-                customer.Orders = GenerateOrders(customer.Id, 2, 500, DateTime.Now.AddDays(-150));
-                customer.Interactions = GenerateInteractions(customer.Id, InteractionType.Call, 0.1f);
+                var customer = churnFaker.Generate();
+                customer.Orders = GenerateOrders(customer.Id,
+                    orderCount: new Faker().Random.Int(0, 2),
+                    minAmount: 50,
+                    maxAmount: 600,
+                    baseDate: DateTime.Now.AddDays(new Faker().Random.Int(-450, -250)));
+
+                customer.Interactions = GenerateInteractions(customer.Id,
+                    new Faker().PickRandom(InteractionType.Complaint, InteractionType.Support),
+                    sentiment: new Faker().Random.Float(-1.0f, 1.5f));
+
+                customers.Add(customer);
+            }
+
+            // yeni üye - 5%
+            var newFaker = new Faker<Customer>("tr")
+                .RuleFor(c => c.Name, f => f.Name.FullName())
+                .RuleFor(c => c.Email, f => f.Internet.Email())
+                .RuleFor(c => c.Phone, f => f.Phone.PhoneNumber())
+                .RuleFor(c => c.City, f => f.Address.City())
+                .RuleFor(c => c.Sector, f => f.PickRandom("Teknoloji", "E-Ticaret", "Finans"))
+                .RuleFor(c => c.MembershipDate, f => f.Date.Past(0, DateTime.Now.AddDays(-10)))
+                .RuleFor(c => c.CreatedAt, f => DateTime.Now)
+                .RuleFor(c => c.IsDeleted, false);
+
+            for (int i = 0; i < count * 0.05; i++)
+            {
+                var customer = newFaker.Generate();
+                customer.Orders = GenerateOrders(customer.Id,
+                    orderCount: new Faker().Random.Int(1, 2),
+                    minAmount: 200,
+                    maxAmount: 1500,
+                    baseDate: DateTime.Now.AddDays(new Faker().Random.Int(-30, -5)));
+
+                customer.Interactions = GenerateInteractions(customer.Id,
+                    InteractionType.Email,
+                    sentiment: new Faker().Random.Float(2.0f, 4.0f));
+
                 customers.Add(customer);
             }
 
@@ -84,28 +188,32 @@ namespace CustomerAI.Data.Seeds
             await _context.SaveChangesAsync();
         }
 
-        // rastgal sipariş üret
-        private List<Order> GenerateOrders(int customerId, int count, decimal minAmount, DateTime baseDate)
+        private List<Order> GenerateOrders(int customerId, int orderCount, decimal minAmount, decimal maxAmount, DateTime baseDate)
         {
-            var faker = new Faker<Order>()
-                .RuleFor(o => o.TotalAmount, f => f.Finance.Amount(minAmount, minAmount * 2))
-                .RuleFor(o => o.OrderDate, f => f.Date.Between(baseDate.AddDays(-60), baseDate))
-                .RuleFor(o => o.OrderNumber, f => f.Random.AlphaNumeric(8).ToUpper())
-                .RuleFor(o => o.Status, "Tamamlandı");
+            if (orderCount == 0) return new List<Order>();
 
-            return faker.Generate(count);
+            var faker = new Faker<Order>()
+                .RuleFor(o => o.TotalAmount, f => f.Finance.Amount(minAmount, maxAmount))
+                .RuleFor(o => o.OrderDate, f => f.Date.Between(baseDate.AddDays(-90), baseDate))
+                .RuleFor(o => o.OrderNumber, f => f.Random.AlphaNumeric(8).ToUpper())
+                .RuleFor(o => o.Status, f => f.PickRandom("Tamamlandi", "Teslim Edildi", "Iptal", "Iade"))
+                .RuleFor(o => o.CreatedAt, f => DateTime.Now)
+                .RuleFor(o => o.IsDeleted, false);
+
+            return faker.Generate(orderCount);
         }
 
-        // rastgele etkileşim üret
         private List<Interaction> GenerateInteractions(int customerId, InteractionType type, float sentiment)
         {
             var faker = new Faker<Interaction>()
                 .RuleFor(i => i.Type, type)
                 .RuleFor(i => i.Date, f => f.Date.Past(1))
                 .RuleFor(i => i.Notes, f => f.Lorem.Sentence())
-                .RuleFor(i => i.SentimentScore, sentiment); 
+                .RuleFor(i => i.SentimentScore, sentiment)
+                .RuleFor(i => i.CreatedAt, f => DateTime.Now)
+                .RuleFor(i => i.IsDeleted, false);
 
-            return faker.Generate(1); 
+            return faker.Generate(new Faker().Random.Int(1, 3));
         }
     }
 }
