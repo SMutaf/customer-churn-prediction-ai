@@ -70,7 +70,7 @@ namespace CustomerAI.Services.Concrete
             {
                 _logger.LogWarning("DİKKAT! Yüksek Riskli Müşteri Tespit Edildi! ID: {Id}, Skor: {Score}", customer.Id, aiResponse.churn_risk_score);
             }
-            // daha sonra sill
+            // daha sonra sill ai deneme
             if (string.IsNullOrEmpty(aiResponse.ai_advice))
                 throw new Exception("AI Advice boş geldi");
 

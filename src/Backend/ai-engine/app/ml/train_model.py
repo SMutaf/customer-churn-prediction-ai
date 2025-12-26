@@ -16,7 +16,7 @@ conn_str = (
 )
 
 def get_data_from_sql():
-    print("Veritabanına bağlanılıyor...")
+    print("Veritabanına bağlanılıyor")
     try:
         conn = pyodbc.connect(conn_str)
         customers = pd.read_sql("SELECT * FROM Customers", conn)
@@ -25,12 +25,12 @@ def get_data_from_sql():
         conn.close()
         return customers, orders, interactions
     except Exception as e:
-        print("Bağlantı Hatası! Veritabanı boş olabilir veya Driver eksik.")
+        print("Bağlantı Hatası.")
         print(f"Hata: {e}")
         return None, None, None
 
 def prepare_features(customers, orders, interactions):
-    print("🛠️ Veriler işleniyor ve etiketleniyor...")
+    print("Veriler işleniyor ve etiketleniyor")
     
     features = []
     now = datetime.datetime.now()
@@ -96,12 +96,12 @@ def train():
     # 1. Veriyi Çek
     cust, ords, inter = get_data_from_sql()
     if cust is None or cust.empty:
-        print("⚠️ Veritabanında veri yok! Önce Seed işlemini yapmalısın.")
+        print("Veritabanında veri yok.")
         return
 
     # 2. Hazırla
     df = prepare_features(cust, ords, inter)
-    print(f"📊 Toplam {len(df)} satır veri eğitim için hazır.")
+    print(f"Toplam {len(df)} satır veri eğitim için hazır.")
     
     X = df[['total_spend', 'membership_days', 'last_interaction_score']]
     y = df['is_churn']
@@ -109,14 +109,14 @@ def train():
     # 3. Eğit
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
     
-    print("🧠 Model eğitiliyor (Random Forest)...")
+    print("Model eğitiliyor (Random Forest)")
     model = RandomForestClassifier(n_estimators=100, random_state=42)
     model.fit(X_train, y_train)
     
     # 4. Test Et
     y_pred = model.predict(X_test)
     accuracy = accuracy_score(y_test, y_pred)
-    print(f"🎯 Model Doğruluğu: %{accuracy*100:.2f}")
+    print(f"Model Doğruluğu: %{accuracy*100:.2f}")
     
     # 5. Kaydet 
     # Dosya yolunu 'app' klasörünün içinde, main.py'nin yanında.

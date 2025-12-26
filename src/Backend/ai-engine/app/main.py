@@ -85,7 +85,7 @@ def predict_churn(data: CustomerData):
         raise HTTPException(status_code=500, detail="AI modeli yüklenemedi")
 
     try:
-        # 🔒 NaN / None / Inf TEMİZLEME
+        #  NaN / None / Inf TEMİZLEME
         last_score = data.last_interaction_score
 
         if last_score is None or not isinstance(last_score, (int, float)) or math.isnan(last_score):
