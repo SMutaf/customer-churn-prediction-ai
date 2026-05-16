@@ -1,4 +1,6 @@
 ﻿using CustomerAI.Core.Interfaces;
+using CustomerAI.API.Hubs;
+using CustomerAI.API.Realtime;
 using CustomerAI.Data.Context;
 using CustomerAI.Data.Repositories;
 using CustomerAI.Services.Concrete;
@@ -15,9 +17,10 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
     {
-        policy.AllowAnyOrigin()
+        policy.SetIsOriginAllowed(_ => true)
               .AllowAnyMethod()
-              .AllowAnyHeader();
+              .AllowAnyHeader()
+              .AllowCredentials();
     });
 });
 
@@ -31,6 +34,7 @@ builder.Services.AddScoped<ICoreRiskEngine, CoreRiskEngine>();
 builder.Services.AddScoped<IFinalRiskDecisionService, FinalRiskDecisionService>();
 builder.Services.AddScoped<ISegmentAssignmentService, SegmentAssignmentService>();
 builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
+builder.Services.AddScoped<IAnalyticsRealtimeNotifier, SignalRAnalyticsRealtimeNotifier>();
 builder.Services.AddScoped<IReportService, ReportService>();
 builder.Services.AddScoped<IReportRepository, ReportRepository>();
 
@@ -41,6 +45,7 @@ builder.Services.AddControllers()
     });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddSignalR();
 
 builder.Services.AddHttpClient<IPythonApiService, PythonApiService>(client =>
 {
@@ -64,4 +69,5 @@ app.UseCors("AllowAll");
 app.UseAuthorization();
 app.UseMiddleware<CustomerAI.API.Middleware.GlobalExceptionMiddleware>();
 app.MapControllers();
+app.MapHub<AnalyticsHub>("/hubs/analytics");
 app.Run();

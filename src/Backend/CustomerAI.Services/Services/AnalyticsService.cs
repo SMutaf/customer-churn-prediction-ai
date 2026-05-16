@@ -18,6 +18,7 @@ namespace CustomerAI.Services.Concrete
         private readonly IPythonApiService _pythonApiService;
         private readonly IFinalRiskDecisionService _finalRiskDecisionService;
         private readonly ISegmentAssignmentService _segmentAssignmentService;
+        private readonly IAnalyticsRealtimeNotifier _realtimeNotifier;
 
         public AnalyticsService(
             CustomerAiDbContext context,
@@ -26,7 +27,8 @@ namespace CustomerAI.Services.Concrete
             ICoreRiskEngine coreRiskEngine,
             IPythonApiService pythonApiService,
             IFinalRiskDecisionService finalRiskDecisionService,
-            ISegmentAssignmentService segmentAssignmentService)
+            ISegmentAssignmentService segmentAssignmentService,
+            IAnalyticsRealtimeNotifier realtimeNotifier)
         {
             _context = context;
             _customerBehaviorService = customerBehaviorService;
@@ -35,6 +37,7 @@ namespace CustomerAI.Services.Concrete
             _pythonApiService = pythonApiService;
             _finalRiskDecisionService = finalRiskDecisionService;
             _segmentAssignmentService = segmentAssignmentService;
+            _realtimeNotifier = realtimeNotifier;
         }
 
         public async Task<AiPredictionLog> AnalyzeSingleCustomerAsync(int customerId)
@@ -84,20 +87,27 @@ namespace CustomerAI.Services.Concrete
                 .Select(c => c.Id)
                 .ToListAsync();
 
+            await _realtimeNotifier.AnalysisStartedAsync(allCustomerIds.Count);
             var successCount = 0;
+            var processedCount = 0;
 
             foreach (var id in allCustomerIds)
             {
                 try
                 {
-                    await AnalyzeSingleCustomerAsync(id);
+                    var prediction = await AnalyzeSingleCustomerAsync(id);
                     successCount++;
+                    processedCount++;
+                    await _realtimeNotifier.CustomerAnalyzedAsync(prediction, processedCount, allCustomerIds.Count);
                 }
-                catch
+                catch (Exception ex)
                 {
+                    processedCount++;
+                    await _realtimeNotifier.CustomerAnalysisFailedAsync(id, ex.Message, processedCount, allCustomerIds.Count);
                 }
             }
 
+            await _realtimeNotifier.AnalysisCompletedAsync(successCount, allCustomerIds.Count);
             return successCount;
         }
 
