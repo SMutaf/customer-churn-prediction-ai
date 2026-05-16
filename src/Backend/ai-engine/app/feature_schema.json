@@ -1,0 +1,61 @@
+{
+  "version": "1.0",
+  "features": [
+    {
+      "name": "total_spend",
+      "order": 0
+    },
+    {
+      "name": "membership_days",
+      "order": 1
+    },
+    {
+      "name": "recency_days",
+      "order": 2
+    },
+    {
+      "name": "order_count",
+      "order": 3
+    },
+    {
+      "name": "average_order_value",
+      "order": 4
+    },
+    {
+      "name": "average_order_gap_days",
+      "order": 5
+    },
+    {
+      "name": "purchase_frequency",
+      "order": 6
+    },
+    {
+      "name": "last_interaction_score",
+      "order": 7
+    },
+    {
+      "name": "average_sentiment_score",
+      "order": 8
+    },
+    {
+      "name": "interaction_count",
+      "order": 9
+    },
+    {
+      "name": "complaint_count",
+      "order": 10
+    },
+    {
+      "name": "spend_last_30_days",
+      "order": 11
+    },
+    {
+      "name": "spend_last_90_days",
+      "order": 12
+    },
+    {
+      "name": "spend_drop_rate",
+      "order": 13
+    }
+  ]
+}

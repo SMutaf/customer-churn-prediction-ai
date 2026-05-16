@@ -1,0 +1,42 @@
+{
+  "version": "20260515112901",
+  "trained_at": "2026-05-15T11:29:01.308222Z",
+  "model_type": "RandomForestClassifier",
+  "feature_schema": [
+    "total_spend",
+    "membership_days",
+    "recency_days",
+    "order_count",
+    "average_order_value",
+    "average_order_gap_days",
+    "purchase_frequency",
+    "last_interaction_score",
+    "average_sentiment_score",
+    "interaction_count",
+    "complaint_count",
+    "spend_last_30_days",
+    "spend_last_90_days",
+    "spend_drop_rate"
+  ],
+  "accuracy": 1.0,
+  "precision": 1.0,
+  "recall": 1.0,
+  "f1_score": 1.0,
+  "feature_importance": {
+    "total_spend": 0.0918,
+    "membership_days": 0.0343,
+    "recency_days": 0.0566,
+    "order_count": 0.0582,
+    "average_order_value": 0.0518,
+    "average_order_gap_days": 0.0706,
+    "purchase_frequency": 0.0906,
+    "last_interaction_score": 0.1817,
+    "average_sentiment_score": 0.1981,
+    "interaction_count": 0.0501,
+    "complaint_count": 0.0761,
+    "spend_last_30_days": 0.0018,
+    "spend_last_90_days": 0.0265,
+    "spend_drop_rate": 0.0117
+  },
+  "training_row_count": 1000
+}
