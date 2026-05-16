@@ -1,6 +1,8 @@
 # --- .NET & Visual Studio ---
 [Bb]in/
 [Oo]bj/
+.artifacts/
+build_artifacts/
 .vs/
 *.user
 *.userosscache
@@ -20,6 +22,11 @@ venv/
 env/
 ENV/
 .env
+
+# --- Node / Frontend ---
+node_modules/
+dist/
+*.tsbuildinfo
 
 # --- IDE & General ---
 .vscode/

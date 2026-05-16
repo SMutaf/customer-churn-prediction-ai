@@ -1,0 +1,16 @@
+<Project>
+  <PropertyGroup>
+    <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)..\..\build_artifacts\obj\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
+    <BaseOutputPath>$(MSBuildThisFileDirectory)..\..\build_artifacts\bin\$(MSBuildProjectName)\</BaseOutputPath>
+    <DefaultItemExcludes>$(DefaultItemExcludes);**\bin\**;**\obj\**</DefaultItemExcludes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="$(MSBuildProjectDirectory)\bin\**" />
+    <Compile Remove="$(MSBuildProjectDirectory)\obj\**" />
+    <EmbeddedFiles Remove="$(MSBuildProjectDirectory)\bin\**" />
+    <EmbeddedFiles Remove="$(MSBuildProjectDirectory)\obj\**" />
+    <None Remove="$(MSBuildProjectDirectory)\bin\**" />
+    <None Remove="$(MSBuildProjectDirectory)\obj\**" />
+  </ItemGroup>
+</Project>
