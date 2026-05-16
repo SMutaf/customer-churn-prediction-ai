@@ -33,6 +33,9 @@ namespace CustomerAI.Data.Migrations
                     b.Property<double>("ChurnScore")
                         .HasColumnType("float");
 
+                    b.Property<double>("CoreRiskScore")
+                        .HasColumnType("float");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -45,6 +48,15 @@ namespace CustomerAI.Data.Migrations
                     b.Property<string>("MainReason")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<double>("FinalRiskScore")
+                        .HasColumnType("float");
+
+                    b.Property<string>("ModelExplanationsJson")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("MlChurnProbability")
+                        .HasColumnType("float");
+
                     b.Property<DateTime>("PredictionDate")
                         .HasColumnType("datetime2");
 
@@ -54,6 +66,12 @@ namespace CustomerAI.Data.Migrations
 
                     b.Property<int>("RiskLevel")
                         .HasColumnType("int");
+
+                    b.Property<string>("Segment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TriggeredRulesJson")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");

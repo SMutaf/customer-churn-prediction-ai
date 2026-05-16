@@ -1,93 +1,79 @@
-﻿using Azure;
 using CustomerAI.Core.DTOs;
 using CustomerAI.Core.Entities;
 using CustomerAI.Core.Enums;
-using CustomerAI.Core.Interfaces;
+using CustomerAI.Core.Risk;
 using CustomerAI.Data.Context;
 using CustomerAI.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-
+using System.Text.Json;
 
 namespace CustomerAI.Services.Concrete
 {
     public class AnalyticsService : IAnalyticsService
     {
         private readonly CustomerAiDbContext _context;
+        private readonly ICustomerBehaviorService _customerBehaviorService;
+        private readonly IFeatureExtractionService _featureExtractionService;
+        private readonly ICoreRiskEngine _coreRiskEngine;
         private readonly IPythonApiService _pythonApiService;
-        private readonly ILogger _logger;
+        private readonly IFinalRiskDecisionService _finalRiskDecisionService;
+        private readonly ISegmentAssignmentService _segmentAssignmentService;
 
-        public AnalyticsService(CustomerAiDbContext context, IPythonApiService pythonApiService, ILogger<AnalyticsService> logger)
+        public AnalyticsService(
+            CustomerAiDbContext context,
+            ICustomerBehaviorService customerBehaviorService,
+            IFeatureExtractionService featureExtractionService,
+            ICoreRiskEngine coreRiskEngine,
+            IPythonApiService pythonApiService,
+            IFinalRiskDecisionService finalRiskDecisionService,
+            ISegmentAssignmentService segmentAssignmentService)
         {
             _context = context;
+            _customerBehaviorService = customerBehaviorService;
+            _featureExtractionService = featureExtractionService;
+            _coreRiskEngine = coreRiskEngine;
             _pythonApiService = pythonApiService;
-            _logger = logger;
+            _finalRiskDecisionService = finalRiskDecisionService;
+            _segmentAssignmentService = segmentAssignmentService;
         }
 
         public async Task<AiPredictionLog> AnalyzeSingleCustomerAsync(int customerId)
         {
-            _logger.LogInformation("Müşteri analizi başlatılıyor. ID: {CustomerId}", customerId);
-
             var customer = await _context.Customers
-                .Include(c => c.Orders)
-                .Include(c => c.Interactions)
-                .FirstOrDefaultAsync(c => c.Id == customerId);
+                .AsNoTracking()
+                .FirstOrDefaultAsync(c => c.Id == customerId && !c.IsDeleted);
 
             if (customer == null)
             {
-                _logger.LogWarning("Analiz iptal edildi: Müşteri bulunamadı! ID: {CustomerId}", customerId);
                 throw new Exception("Müşteri bulunamadı!");
             }
 
-            int membershipDays = (DateTime.Now - customer.MembershipDate).Days;
-            float totalSpend = (float)customer.Orders.Sum(o => o.TotalAmount);
-
-            float lastSentiment = 0;
-            var lastInteraction = customer.Interactions.OrderByDescending(i => i.Date).FirstOrDefault();
-            if (lastInteraction != null && lastInteraction.SentimentScore.HasValue)
-            {
-                lastSentiment = lastInteraction.SentimentScore.Value;
-            }
-
-            var aiRequest = new AiRequestDto
-            {
-                customer_id = customer.Id,
-                sector = customer.Sector,
-                membership_days = membershipDays,
-                total_spend = totalSpend,
-                last_interaction_score = lastSentiment
-            };
-
+            var behaviorProfile = await _customerBehaviorService.BuildBehaviorProfileAsync(customerId);
+            var featureVector = _featureExtractionService.Extract(behaviorProfile);
+            var coreRiskProfile = _coreRiskEngine.Evaluate(featureVector);
+            var aiRequest = BuildAiRequest(customer.Sector, featureVector);
             var aiResponse = await _pythonApiService.GetChurnPredictionAsync(aiRequest);
-
-            var riskLevel = aiResponse.churn_risk_score > 0.7 ? RiskLevel.High :
-                            aiResponse.churn_risk_score > 0.4 ? RiskLevel.Medium : RiskLevel.Low;
-
-            if (riskLevel == RiskLevel.High)
-            {
-                _logger.LogWarning("DİKKAT! Yüksek Riskli Müşteri Tespit Edildi! ID: {Id}, Skor: {Score}", customer.Id, aiResponse.churn_risk_score);
-            }
-            // daha sonra sill ai deneme
-            if (string.IsNullOrEmpty(aiResponse.ai_advice))
-                throw new Exception("AI Advice boş geldi");
+            var finalProfile = _finalRiskDecisionService.BuildFinalProfile(coreRiskProfile, aiResponse);
+            finalProfile.Segment = _segmentAssignmentService.Assign(finalProfile, featureVector);
 
             var predictionLog = new AiPredictionLog
             {
-                CustomerId = customer.Id,
-                PredictionDate = DateTime.Now,
-                ChurnScore = aiResponse.churn_risk_score,
-                RecommendedAction = aiResponse.ai_advice,
-                RiskLevel = aiResponse.churn_risk_score > 0.7 ? RiskLevel.High :
-                            aiResponse.churn_risk_score > 0.4 ? RiskLevel.Medium : RiskLevel.Low,
-                MainReason = aiResponse.main_reason
+                CustomerId = finalProfile.CustomerId,
+                PredictionDate = finalProfile.CreatedAt,
+                ChurnScore = finalProfile.FinalRiskScore / 100,
+                CoreRiskScore = finalProfile.CoreRiskScore,
+                MlChurnProbability = finalProfile.MlChurnProbability,
+                FinalRiskScore = finalProfile.FinalRiskScore,
+                RecommendedAction = finalProfile.RecommendedAction,
+                RiskLevel = finalProfile.RiskLevel,
+                Segment = finalProfile.Segment.ToString(),
+                MainReason = finalProfile.MainReason,
+                TriggeredRulesJson = JsonSerializer.Serialize(finalProfile.TriggeredRules),
+                ModelExplanationsJson = JsonSerializer.Serialize(aiResponse.model_explanations ?? new ModelExplanationDto { Method = "unavailable" })
             };
 
             await _context.AiPredictionLogs.AddAsync(predictionLog);
             await _context.SaveChangesAsync();
-
             return predictionLog;
         }
 
@@ -98,9 +84,7 @@ namespace CustomerAI.Services.Concrete
                 .Select(c => c.Id)
                 .ToListAsync();
 
-            _logger.LogInformation("Toplu analiz başladı. Toplam {Count} müşteri taranacak.", allCustomerIds.Count);
-
-            int successCount = 0;
+            var successCount = 0;
 
             foreach (var id in allCustomerIds)
             {
@@ -109,16 +93,36 @@ namespace CustomerAI.Services.Concrete
                     await AnalyzeSingleCustomerAsync(id);
                     successCount++;
                 }
-                catch (Exception ex)
+                catch
                 {
-                    _logger.LogError(ex, "Toplu işlem sırasında Müşteri ID: {Id} analiz edilemedi.", id);
-                    continue;
                 }
             }
 
-            _logger.LogInformation("Toplu analiz bitti. {Success}/{Total} başarı oranı.", successCount, allCustomerIds.Count);
             return successCount;
         }
-   
+
+        private static AiRequestDto BuildAiRequest(string sector, CustomerFeatureVector featureVector)
+        {
+            return new AiRequestDto
+            {
+                customer_id = featureVector.CustomerId,
+                sector = sector,
+                total_spend = featureVector.TotalSpend,
+                membership_days = featureVector.MembershipDays,
+                recency_days = featureVector.RecencyDays,
+                order_count = featureVector.OrderCount,
+                average_order_value = featureVector.AverageOrderValue,
+                average_order_gap_days = featureVector.AverageOrderGapDays,
+                purchase_frequency = featureVector.PurchaseFrequency,
+                last_interaction_score = featureVector.LastSentimentScore,
+                average_sentiment_score = featureVector.AverageSentimentScore,
+                interaction_count = featureVector.InteractionCount,
+                complaint_count = featureVector.ComplaintCount,
+                spend_last_30_days = featureVector.SpendLast30Days,
+                spend_last_90_days = featureVector.SpendLast90Days,
+                spend_drop_rate = featureVector.SpendDropRate
+            };
+        }
+
     }
 }
