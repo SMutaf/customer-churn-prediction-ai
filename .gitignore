@@ -22,6 +22,7 @@ venv/
 env/
 ENV/
 .env
+src/Backend/ai-engine/app/reference_features.csv
 
 # --- Node / Frontend ---
 node_modules/
