@@ -56,6 +56,14 @@
     {
       "name": "spend_drop_rate",
       "order": 13
+    },
+    {
+      "name": "recency_bucket",
+      "order": 14
+    },
+    {
+      "name": "spend_trend_flag",
+      "order": 15
     }
   ]
 }
