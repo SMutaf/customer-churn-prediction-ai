@@ -16,11 +16,16 @@ namespace CustomerAI.API.Controllers
         }
 
         [HttpPost("generate-fake-data")]
-        public async Task<IActionResult> GenerateFakeData()
+        public async Task<IActionResult> GenerateFakeData([FromQuery] int count = 1000)
         {
             var seeder = new DataSeeder(_context);
-            await seeder.SeedAsync(1000); // 1000 Müşteri oluştur
-            return Ok("1000 Adet sahte veri başarıyla oluşturuldu! 🚀");
+            var addedCount = await seeder.SeedAsync(count);
+            return Ok(new
+            {
+                target_customers = Math.Max(count, 500),
+                added_customers = addedCount,
+                message = $"{addedCount} adet sahte müşteri başarıyla oluşturuldu."
+            });
         }
     }
 }

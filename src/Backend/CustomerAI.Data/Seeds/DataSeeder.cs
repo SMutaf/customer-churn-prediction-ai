@@ -16,7 +16,7 @@ namespace CustomerAI.Data.Seeds
             _context = context;
         }
 
-        public async Task SeedAsync(int count = 1000)
+        public async Task<int> SeedAsync(int count = 1000)
         {
             var targetCount = Math.Max(count, MinimumSeedCount);
             var customers = new List<Customer>();
@@ -28,6 +28,7 @@ namespace CustomerAI.Data.Seeds
 
             await _context.Customers.AddRangeAsync(customers);
             await _context.SaveChangesAsync();
+            return customers.Count;
         }
 
         private Customer CreateRandomScenarioCustomer()
@@ -60,7 +61,7 @@ namespace CustomerAI.Data.Seeds
         {
             var customer = CreateBaseCustomer("SaaS", "Finans", "Perakende");
             customer.MembershipDate = DateTime.Now.AddDays(-_faker.Random.Int(600, 1400));
-            customer.Orders = GenerateOrders(_faker.Random.Int(6, 12), 900, 4200, DateTime.Now.AddDays(-500), DateTime.Now.AddDays(-120));
+            customer.Orders = GenerateOrders(_faker.Random.Int(6, 12), 900, 4200, DateTime.Now.AddDays(-500), DateTime.Now.AddDays(-190));
             customer.Interactions = GenerateInteractions(_faker.Random.Int(1, 3), InteractionType.Email, 2.8f, 3.4f, 220);
             return customer;
         }
@@ -87,7 +88,7 @@ namespace CustomerAI.Data.Seeds
         {
             var customer = CreateBaseCustomer("Perakende", "E-Ticaret", "Hizmet");
             customer.MembershipDate = DateTime.Now.AddDays(-_faker.Random.Int(500, 1200));
-            customer.Orders = GenerateOrders(_faker.Random.Int(5, 10), 250, 1700, DateTime.Now.AddDays(-360), DateTime.Now.AddDays(-35));
+            customer.Orders = GenerateDecliningOrders();
             customer.Interactions = GenerateInteractions(_faker.Random.Int(2, 4), InteractionType.Email, 2.6f, 3.6f, 120);
             return customer;
         }
@@ -149,6 +150,14 @@ namespace CustomerAI.Data.Seeds
                 });
             }
 
+            return orders.OrderBy(o => o.OrderDate).ToList();
+        }
+
+        private List<Order> GenerateDecliningOrders()
+        {
+            var orders = new List<Order>();
+            orders.AddRange(GenerateOrders(_faker.Random.Int(4, 7), 900, 1800, DateTime.Now.AddDays(-180), DateTime.Now.AddDays(-95)));
+            orders.AddRange(GenerateOrders(_faker.Random.Int(1, 2), 80, 350, DateTime.Now.AddDays(-80), DateTime.Now.AddDays(-35)));
             return orders.OrderBy(o => o.OrderDate).ToList();
         }
 
