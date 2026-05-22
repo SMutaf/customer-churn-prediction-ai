@@ -38,6 +38,15 @@ class FeatureExtractor:
             "spend_last_30_days": float(profile.spend_last_30_days),
             "spend_last_90_days": float(profile.spend_last_90_days),
             "spend_drop_rate": float(spend_drop_rate),
+            "recency_bucket": (
+                3 if profile.recency_days > 180
+                else 2 if profile.recency_days > 90
+                else 1 if profile.recency_days > 30
+                else 0
+            ),
+            "spend_trend_flag": (
+                1 if spend_drop_rate <= -0.40 else 0
+            ),
         }
 
     def extract_many(self, profiles):
@@ -51,5 +60,17 @@ class FeatureExtractor:
             default = 3.0 if "sentiment" in feature or feature == "last_interaction_score" else 0.0
             if feature == "recency_days":
                 default = 999
-            row[feature] = clean_number(request_dict.get(feature), default)
+            if feature == "recency_bucket":
+                recency_days = clean_number(request_dict.get("recency_days"), 999)
+                row[feature] = (
+                    3 if recency_days > 180
+                    else 2 if recency_days > 90
+                    else 1 if recency_days > 30
+                    else 0
+                )
+            elif feature == "spend_trend_flag":
+                spend_drop_rate = clean_number(request_dict.get("spend_drop_rate"), 0.0)
+                row[feature] = 1 if spend_drop_rate <= -0.40 else 0
+            else:
+                row[feature] = clean_number(request_dict.get(feature), default)
         return pd.DataFrame([row], columns=expected_features)

@@ -3,6 +3,9 @@ from .feature_extractor import FeatureExtractor
 from .model_registry import expected_feature_names, load_metadata, load_model, load_reference_features
 
 
+CHURN_PROBABILITY_THRESHOLD = 0.35
+
+
 class ModelPredictor:
     def __init__(self):
         self.model = load_model()
@@ -47,7 +50,7 @@ class ModelPredictor:
         feature_frame = self.feature_extractor.request_to_frame(request_dict, self.feature_names)
         churn_class_index = self.explainability.resolve_churn_class_index(self.model)
         probability = float(self.model.predict_proba(feature_frame)[0][churn_class_index])
-        predicted_class = int(probability >= 0.5)
+        predicted_class = int(probability >= CHURN_PROBABILITY_THRESHOLD)
         confidence = probability if predicted_class == 1 else 1 - probability
         explanations = (
             self.explainability.explain_prediction(
@@ -68,6 +71,7 @@ class ModelPredictor:
             "churn_probability": round(probability, 4),
             "predicted_class": predicted_class,
             "confidence_score": round(float(confidence), 4),
+            "churn_threshold": CHURN_PROBABILITY_THRESHOLD,
             "top_feature_impacts": top_impacts,
             "model_explanations": explanations,
             "model_version": self.metadata.get("version", "unknown"),

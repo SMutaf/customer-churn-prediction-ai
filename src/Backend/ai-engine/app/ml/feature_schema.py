@@ -13,6 +13,8 @@ FEATURE_COLUMNS = [
     "spend_last_30_days",
     "spend_last_90_days",
     "spend_drop_rate",
+    "recency_bucket",
+    "spend_trend_flag",
 ]
 
 

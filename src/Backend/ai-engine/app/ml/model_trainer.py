@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import StratifiedKFold, cross_val_score, train_test_split
 
 from .behavior_profile_builder import CustomerBehaviorProfileBuilder
 from .data_loader import SqlDataLoader
@@ -22,7 +22,15 @@ class ModelTrainer:
         self.model_factory = model_factory or self.default_model_factory
 
     def default_model_factory(self):
-        return RandomForestClassifier(n_estimators=150, random_state=42, class_weight="balanced")
+        return RandomForestClassifier(
+            n_estimators=100,
+            max_depth=8,
+            min_samples_split=15,
+            min_samples_leaf=6,
+            max_features="sqrt",
+            class_weight="balanced",
+            random_state=42,
+        )
 
     def build_training_dataset(self):
         customers, orders, interactions = self.data_loader.load()
@@ -46,7 +54,14 @@ class ModelTrainer:
 
         model = self.model_factory()
         model.fit(x_train, y_train)
+        cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+        cv_f1_scores = cross_val_score(model, x_train, y_train, cv=cv, scoring="f1")
+        cv_summary = {
+            "cv_f1_mean": round(float(cv_f1_scores.mean()), 4),
+            "cv_f1_std": round(float(cv_f1_scores.std()), 4),
+        }
         metrics = self.evaluate(model, x_test, y_test)
+        metrics.update(cv_summary)
         feature_importance = self.explainability.get_feature_importance(model, FEATURE_COLUMNS)
         reference_info = save_reference_features(x)
         metadata = save_model_artifacts(model, metrics, feature_importance, len(dataset), type(model).__name__, reference_info)
